@@ -6,6 +6,7 @@ import Contact from "../pages/public/Contact";
 import ArtistProfile from "../pages/public/ArtistProfile";
 import WorkDetails from "../pages/public/WorkDetails";
 import Wishlist from "../pages/public/Wishlist";
+import Artists from "../pages/public/Artists";
 
 const AppRoutes = () => {
   return (
@@ -17,6 +18,10 @@ const AppRoutes = () => {
   <Route path="/contact" element={<Contact />} />
   <Route path="/work/:id" element={<WorkDetails />}/>
   <Route path="/wishlist" element={<Wishlist />}/>
+  <Route
+    path="/artists"
+    element={<Artists />}
+/>
 </Routes>
   );
 };
