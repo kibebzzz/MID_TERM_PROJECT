@@ -1,30 +1,44 @@
 import { Heart, Eye, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useWishlist } from "../../context/WishlistContext";
 
  
 
 const ProductCard = ({ product }) => {
+  const { toggleWishlist, isWishlisted } = useWishlist();
+
   return (
     <Link to={`/work/${product.id}`}>
     <div className="group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-500">
 
       {/* Image */}
 
-      <div className="relative overflow-hidden">
+      <div className="relative">
 
-        <img
-          src={product.image}
-          alt={product.title}
-          className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
+    <img
+        src={product.image}
+        alt={product.title}
+        className="w-full h-80 object-cover"
+    />
+
+    <button
+        onClick={(e) => {
+            e.preventDefault();
+            toggleWishlist(product);
+        }}
+        className="absolute top-4 right-4 bg-white rounded-full p-3 shadow-lg hover:scale-110 transition"
+    >
+        <Heart
+            size={20}
+            className={
+                isWishlisted(product.id)
+                    ? "fill-red-500 text-red-500"
+                    : "text-gray-500"
+            }
         />
+    </button>
 
-        <button className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-cyan-400 hover:text-white transition">
-
-          <Heart size={18} />
-
-        </button>
-
-      </div>
+</div>
 
       {/* Content */}
 
