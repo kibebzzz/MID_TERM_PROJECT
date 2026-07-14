@@ -1,11 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
-import { Search, Heart } from "lucide-react";
+import { Search, Heart, ShoppingCart } from "lucide-react";
 
 import Logo from "../../assets/logos/logo";
 import { useWishlist } from "../../context/WishlistContext";
+import { useCart } from "../../context/CartContext";
 
 const Navbar = () => {
   const { wishlist } = useWishlist();
+  const { cart } = useCart();
 
   const navLinkClass = ({ isActive }) =>
     `transition-all duration-300 ${
@@ -27,31 +29,19 @@ const Navbar = () => {
         {/* Navigation */}
         <div className="hidden md:flex items-center gap-10">
 
-          <NavLink
-            to="/marketplace"
-            className={navLinkClass}
-          >
+          <NavLink to="/marketplace" className={navLinkClass}>
             Marketplace
           </NavLink>
 
-          <NavLink
-            to="/artists"
-            className={navLinkClass}
-          >
+          <NavLink to="/artists" className={navLinkClass}>
             Artists
           </NavLink>
 
-          <NavLink
-            to="/about"
-            className={navLinkClass}
-          >
+          <NavLink to="/about" className={navLinkClass}>
             About
           </NavLink>
 
-          <NavLink
-            to="/contact"
-            className={navLinkClass}
-          >
+          <NavLink to="/contact" className={navLinkClass}>
             Contact
           </NavLink>
 
@@ -74,6 +64,7 @@ const Navbar = () => {
         </div>
 
         {/* Right Side */}
+
         <div className="flex items-center gap-4">
 
           {/* Wishlist */}
@@ -96,6 +87,35 @@ const Navbar = () => {
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
 
                   {wishlist.length}
+
+                </span>
+
+              )}
+
+            </div>
+
+          </Link>
+
+          {/* Cart */}
+
+          <Link to="/cart">
+
+            <div className="relative">
+
+              <button className="p-2 rounded-xl hover:bg-gray-100 transition-all duration-300">
+
+                <ShoppingCart
+                  size={22}
+                  className="text-gray-700 hover:text-cyan-500 transition-colors"
+                />
+
+              </button>
+
+              {cart.length > 0 && (
+
+                <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+
+                  {cart.reduce((total, item) => total + item.quantity, 0)}
 
                 </span>
 

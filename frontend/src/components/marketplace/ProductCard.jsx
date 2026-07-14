@@ -6,6 +6,7 @@ import { useWishlist } from "../../context/WishlistContext";
 
 const ProductCard = ({ product }) => {
   const { toggleWishlist, isWishlisted } = useWishlist();
+const { addToCart } = useCart();
 
   const artist = artists.find(
     (item) => item.name === product.artist
@@ -118,11 +119,15 @@ const ProductCard = ({ product }) => {
 
             </Link>
 
-            <button className="p-2 rounded-full bg-cyan-400 text-white hover:scale-110 transition">
-
-              <ShoppingCart size={18} />
-
-            </button>
+            <button
+  onClick={(e) => {
+    e.preventDefault();
+    addToCart(product);
+  }}
+  className="p-2 rounded-full bg-cyan-400 text-white hover:scale-110 transition"
+>
+  <ShoppingCart size={18} />
+</button>
 
           </div>
 
