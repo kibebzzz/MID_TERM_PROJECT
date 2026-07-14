@@ -1,4 +1,5 @@
 import testimonials from "../../data/testimonials";
+import SectionHeader from "../common/SectionHeader";
 
 const Testimonials = () => {
   return (
@@ -6,9 +7,11 @@ const Testimonials = () => {
 
       <div className="max-w-7xl mx-auto px-8">
 
-        <h2 className="text-4xl font-bold text-center mb-16">
-          What Our Community Says
-        </h2>
+        <SectionHeader
+  center
+  title="What Our Community Says"
+  subtitle="Hear directly from artists and collectors using Palette."
+/>
 
         <div className="grid md:grid-cols-2 gap-10">
 

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import Logo from "../../assets/logos/logo";
+import { Search } from "lucide-react";
 
 const Navbar = () => {
   const navLinkClass = ({ isActive }) =>
@@ -10,7 +11,7 @@ const Navbar = () => {
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+    <nav className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-white/50 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
 
         {/* Logo */}
@@ -51,16 +52,31 @@ const Navbar = () => {
 
         </div>
 
+        <div className="hidden lg:flex items-center bg-gray-100 rounded-full px-4 py-2 w-72">
+
+  <Search
+    size={18}
+    className="text-gray-400"
+  />
+
+  <input
+    type="text"
+    placeholder="Search artwork..."
+    className="bg-transparent ml-3 outline-none w-full"
+  />
+
+</div>
+
         {/* Right Side */}
         <div className="flex items-center gap-4">
 
-          <button className="font-medium hover:text-cyan-500 transition-colors">
-            Login
-          </button>
+          <button className="px-5 py-2 rounded-xl hover:bg-gray-100 transition-all duration-300 font-medium">
+  Login
+</button>
 
-          <button className="bg-cyan-400 hover:bg-cyan-500 transition-all duration-300 text-white px-6 py-2 rounded-xl shadow-md hover:shadow-lg">
-            Sign Up
-          </button>
+          <button className="bg-gradient-to-r from-cyan-400 to-cyan-500 hover:scale-105 hover:shadow-xl hover:shadow-cyan-300/40 transition-all duration-300 text-white px-6 py-2 rounded-xl font-semibold">
+  Sign Up
+</button>
 
         </div>
 

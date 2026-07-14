@@ -1,12 +1,14 @@
 import categories from "../../data/categories";
+import SectionHeader from "../common/SectionHeader";
 
 const Categories = () => {
   return (
     <section className="max-w-7xl mx-auto px-8 py-24">
 
-      <h2 className="text-4xl font-bold mb-12">
-        Browse Categories
-      </h2>
+      <SectionHeader
+  title="Browse Categories"
+  subtitle="Explore every artistic style available on Palette."
+/>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
 

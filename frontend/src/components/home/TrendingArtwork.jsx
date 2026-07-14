@@ -1,16 +1,15 @@
 import ProductCard from "../marketplace/ProductCard";
-
+import SectionHeader from "../common/SectionHeader";
 import products from "../../data/products";
 
 const TrendingArtwork = () => {
   return (
     <section className="max-w-7xl mx-auto px-8 py-24">
 
-      <h2 className="text-4xl font-bold mb-12">
-
-        Trending Artwork
-
-      </h2>
+      <SectionHeader
+  title="Trending Artwork"
+  subtitle="Browse the latest artwork loved by collectors across the community."
+/>
 
       <div className="grid md:grid-cols-3 gap-10">
 

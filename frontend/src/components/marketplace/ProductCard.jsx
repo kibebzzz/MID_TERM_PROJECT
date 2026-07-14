@@ -1,7 +1,11 @@
 import { Heart, Eye, ShoppingCart } from "lucide-react";
+import { Link } from "react-router-dom";
+
+ 
 
 const ProductCard = ({ product }) => {
   return (
+    <Link to={`/work/${product.id}`}>
     <div className="group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-500">
 
       {/* Image */}
@@ -26,9 +30,17 @@ const ProductCard = ({ product }) => {
 
       <div className="p-6">
 
-        <p className="text-sm text-cyan-500 font-medium">
-          {product.category}
-        </p>
+        <div className="flex justify-between items-center">
+
+  <span className="text-sm text-cyan-500 font-semibold">
+    {product.category}
+  </span>
+
+  <span className="text-xs bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full">
+    New
+  </span>
+
+</div>
 
         <h3 className="text-2xl font-semibold mt-2">
           {product.title}
@@ -77,7 +89,11 @@ const ProductCard = ({ product }) => {
       </div>
 
     </div>
+    </Link>
   );
+  
 };
+
+
 
 export default ProductCard;

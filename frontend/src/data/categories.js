@@ -1,10 +1,12 @@
 const categories = [
-  "🎨 Paintings",
-  "💻 Digital Art",
-  "📸 Photography",
-  "🗿 Sculpture",
-  "🧵 Fashion",
-  "🎵 Music",
+  "All",
+  "Painting",
+  "Music",
+  "Photography",
+  "Digital Art",
+  "Fashion",
+  "Illustration",
+  "Sculpture",
 ];
 
 export default categories;

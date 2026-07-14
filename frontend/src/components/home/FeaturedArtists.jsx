@@ -1,12 +1,14 @@
 import artists from "../../data/artists";
+import SectionHeader from "../common/SectionHeader";
 
 const FeaturedArtists = () => {
   return (
     <section className="max-w-7xl mx-auto px-8 py-24">
 
-      <h2 className="text-4xl font-bold mb-12">
-        Featured Artists
-      </h2>
+      <SectionHeader
+  title="Featured Artists"
+  subtitle="Meet talented creatives shaping the future of art through innovation and passion."
+/>
 
       <div className="grid md:grid-cols-3 gap-8">
 
@@ -33,19 +35,21 @@ const FeaturedArtists = () => {
 
       </h3>
 
-      <span className="text-cyan-500 text-sm">
-
-        ✔ Verified
-
-      </span>
+      {artist.verified && (
+  <span className="text-cyan-500 text-sm font-medium">
+    ✔ Verified
+  </span>
+)}
 
     </div>
 
     <p className="text-gray-500 mt-2">
+  {artist.specialty}
+</p>
 
-      {artist.specialty}
-
-    </p>
+<p className="mt-2 text-yellow-500">
+  ⭐ {artist.rating}
+</p>
 
     <button className="mt-6 text-cyan-500 font-semibold">
 
