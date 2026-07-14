@@ -7,6 +7,7 @@ import ArtistProfile from "../pages/public/ArtistProfile";
 import WorkDetails from "../pages/public/WorkDetails";
 import Wishlist from "../pages/public/Wishlist";
 import Artists from "../pages/public/Artists";
+import Cart from "../pages/public/Cart";
 
 const AppRoutes = () => {
   return (
@@ -18,10 +19,8 @@ const AppRoutes = () => {
   <Route path="/contact" element={<Contact />} />
   <Route path="/work/:id" element={<WorkDetails />}/>
   <Route path="/wishlist" element={<Wishlist />}/>
-  <Route
-    path="/artists"
-    element={<Artists />}
-/>
+  <Route path="/artists" element={<Artists />}/>
+  <Route path="/cart" element={<Cart />}/>
 </Routes>
   );
 };

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import artists from "../../data/artists";
 import { useWishlist } from "../../context/WishlistContext";
+import { useCart } from "../../context/CartContext";
 
 const ProductCard = ({ product }) => {
   const { toggleWishlist, isWishlisted } = useWishlist();
