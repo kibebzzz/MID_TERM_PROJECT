@@ -1,0 +1,83 @@
+import { Heart, Eye, ShoppingCart } from "lucide-react";
+
+const ProductCard = ({ product }) => {
+  return (
+    <div className="group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-500">
+
+      {/* Image */}
+
+      <div className="relative overflow-hidden">
+
+        <img
+          src={product.image}
+          alt={product.title}
+          className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
+        />
+
+        <button className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-cyan-400 hover:text-white transition">
+
+          <Heart size={18} />
+
+        </button>
+
+      </div>
+
+      {/* Content */}
+
+      <div className="p-6">
+
+        <p className="text-sm text-cyan-500 font-medium">
+          {product.category}
+        </p>
+
+        <h3 className="text-2xl font-semibold mt-2">
+          {product.title}
+        </h3>
+
+        <div className="flex items-center justify-between mt-2">
+
+  <p className="text-gray-500">
+
+    by {product.artist}
+
+  </p>
+
+  <span className="text-yellow-500">
+
+    ★★★★★
+
+  </span>
+
+</div>
+
+        <div className="flex justify-between items-center mt-6">
+
+          <h2 className="text-2xl font-bold">
+            KSh {product.price.toLocaleString()}
+          </h2>
+
+          <div className="flex gap-3">
+
+            <button className="p-2 rounded-full border hover:bg-cyan-400 hover:text-white transition">
+
+              <Eye size={18} />
+
+            </button>
+
+            <button className="p-2 rounded-full bg-cyan-400 text-white hover:scale-110 transition">
+
+              <ShoppingCart size={18} />
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
+
+export default ProductCard;

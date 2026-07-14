@@ -1,0 +1,30 @@
+import categories from "../../data/categories";
+
+const Categories = () => {
+  return (
+    <section className="max-w-7xl mx-auto px-8 py-24">
+
+      <h2 className="text-4xl font-bold mb-12">
+        Browse Categories
+      </h2>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+
+        {categories.map((category) => (
+
+          <div
+            key={category}
+            className="rounded-2xl border border-gray-200 p-8 hover:bg-cyan-400 hover:text-white cursor-pointer transition-all duration-300 text-center text-lg font-semibold"
+          >
+            {category}
+          </div>
+
+        ))}
+
+      </div>
+
+    </section>
+  );
+};
+
+export default Categories;
