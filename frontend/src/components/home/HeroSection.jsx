@@ -43,13 +43,13 @@ const HeroSection = () => {
 
             <Link to="/marketplace">
               <Button>
-  Explore Marketplace
-</Button>
+                Explore Marketplace
+              </Button>
             </Link>
 
             <Button variant="outline">
-  Become a Creator
-</Button>
+               Become a Creator
+            </Button>
 
           </div>
         </motion.div>

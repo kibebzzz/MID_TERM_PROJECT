@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import products from "../../data/products";
+import PageWrapper from "../../components/common/PageWrapper";
 
 const WorkDetails = () => {
   const { id } = useParams();
@@ -19,6 +20,8 @@ const WorkDetails = () => {
   }
 
   return (
+
+    <PageWrapper>
     <section className="max-w-7xl mx-auto px-8 py-20">
 
       <div className="grid lg:grid-cols-2 gap-20">
@@ -102,6 +105,8 @@ const WorkDetails = () => {
       </div>
 
     </section>
+
+    </PageWrapper>
   );
 };
 

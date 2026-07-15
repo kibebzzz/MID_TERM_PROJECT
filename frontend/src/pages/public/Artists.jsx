@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-
+import PageWrapper from "../../components/common/PageWrapper";
 import artists from "../../data/artists";
 
 const Artists = () => {
   return (
+    <PageWrapper>
     <section className="max-w-7xl mx-auto px-8 py-20">
 
       <div className="mb-12">
@@ -71,6 +72,8 @@ const Artists = () => {
       </div>
 
     </section>
+
+    </PageWrapper>
   );
 };
 

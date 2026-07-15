@@ -9,30 +9,40 @@ const Wishlist = () => {
 
         <section className="max-w-7xl mx-auto px-8 py-20">
 
-            <h1 className="text-5xl font-black">
+            {wishlist.length === 0 ? (
 
-                My Wishlist
+<div className="text-center py-24">
 
-            </h1>
+<h2 className="text-4xl font-bold">
 
-            <p className="text-gray-500 mt-4">
+Your Wishlist is Empty ❤️
 
-                Your saved creative works.
+</h2>
 
-            </p>
+<p className="text-gray-500 mt-4">
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
+Save creative works you love.
 
-                {wishlist.map((product) => (
+</p>
 
-                    <ProductCard
-                        key={product.id}
-                        product={product}
-                    />
+</div>
 
-                ))}
+) : (
 
-            </div>
+<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
+
+{wishlist.map((product)=>(
+
+<ProductCard
+key={product.id}
+product={product}
+/>
+
+))}
+
+</div>
+
+)}
 
         </section>
 

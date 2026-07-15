@@ -16,7 +16,6 @@ const artists = [
     verified: true,
     rating: 4.8,
     bio: "Afro Fusion musician blending traditional Kenyan sounds with modern production.",
-    avatar: "https://i.pravatar.cc/300?img=26"
   },
 
   {
@@ -36,7 +35,6 @@ const artists = [
     verified: true,
     rating: 5.0,
     bio: "Concept artist and illustrator creating futuristic African-inspired digital art.",
-    avatar: "https://i.pravatar.cc/300?img=28"
   }
 ];
 

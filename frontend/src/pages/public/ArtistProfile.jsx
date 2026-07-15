@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-
+import PageWrapper from "../../components/common/PageWrapper";
 import artists from "../../data/artists";
 import products from "../../data/products";
 import ProductCard from "../../components/marketplace/ProductCard";
@@ -13,11 +13,14 @@ const ArtistProfile = () => {
 
   if (!artist) {
     return (
+        <PageWrapper>
       <section className="max-w-7xl mx-auto px-8 py-20 text-center">
         <h1 className="text-4xl font-bold">
           Artist Not Found
         </h1>
       </section>
+
+        </PageWrapper>
     );
   }
 
@@ -26,6 +29,8 @@ const ArtistProfile = () => {
   );
 
   return (
+
+    <PageWrapper>
     <section className="max-w-7xl mx-auto px-8 py-20">
 
       {/* Header */}
@@ -92,6 +97,8 @@ const ArtistProfile = () => {
       </div>
 
     </section>
+
+    </PageWrapper>
   );
 };
 

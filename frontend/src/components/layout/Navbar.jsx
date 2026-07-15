@@ -1,6 +1,8 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Search, Heart, ShoppingCart } from "lucide-react";
+import { useState } from "react";
 
+import Button from "../ui/Button";
 import Logo from "../../assets/logos/logo";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
@@ -8,6 +10,17 @@ import { useCart } from "../../context/CartContext";
 const Navbar = () => {
   const { wishlist } = useWishlist();
   const { cart } = useCart();
+
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && search.trim()) {
+      navigate(`/marketplace?search=${encodeURIComponent(search)}`);
+      setSearch("");
+    }
+  };
 
   const navLinkClass = ({ isActive }) =>
     `transition-all duration-300 ${
@@ -22,11 +35,13 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
 
         {/* Logo */}
+
         <NavLink to="/">
           <Logo />
         </NavLink>
 
         {/* Navigation */}
+
         <div className="hidden md:flex items-center gap-10">
 
           <NavLink to="/marketplace" className={navLinkClass}>
@@ -48,6 +63,7 @@ const Navbar = () => {
         </div>
 
         {/* Search */}
+
         <div className="hidden lg:flex items-center bg-gray-100 rounded-full px-4 py-2 w-72">
 
           <Search
@@ -57,6 +73,9 @@ const Navbar = () => {
 
           <input
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleSearch}
             placeholder="Search creative works..."
             className="bg-transparent ml-3 outline-none w-full text-sm"
           />
@@ -73,11 +92,11 @@ const Navbar = () => {
 
             <div className="relative">
 
-              <button className="p-2 rounded-xl hover:bg-gray-100 transition-all duration-300">
+              <button className="p-2 rounded-xl hover:bg-gray-100 transition">
 
                 <Heart
                   size={22}
-                  className="text-gray-700 hover:text-red-500 transition-colors"
+                  className="text-gray-700 hover:text-red-500 transition"
                 />
 
               </button>
@@ -102,11 +121,11 @@ const Navbar = () => {
 
             <div className="relative">
 
-              <button className="p-2 rounded-xl hover:bg-gray-100 transition-all duration-300">
+              <button className="p-2 rounded-xl hover:bg-gray-100 transition">
 
                 <ShoppingCart
                   size={22}
-                  className="text-gray-700 hover:text-cyan-500 transition-colors"
+                  className="text-gray-700 hover:text-cyan-500 transition"
                 />
 
               </button>
@@ -115,7 +134,10 @@ const Navbar = () => {
 
                 <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
 
-                  {cart.reduce((total, item) => total + item.quantity, 0)}
+                  {cart.reduce(
+                    (total, item) => total + item.quantity,
+                    0
+                  )}
 
                 </span>
 
@@ -125,21 +147,17 @@ const Navbar = () => {
 
           </Link>
 
-          {/* Login */}
+          <Link to="/login">
+            <Button variant="outline">
+              Login
+            </Button>
+          </Link>
 
-          <button className="px-5 py-2 rounded-xl hover:bg-gray-100 transition-all duration-300 font-medium">
-
-            Login
-
-          </button>
-
-          {/* Sign Up */}
-
-          <button className="bg-gradient-to-r from-cyan-400 to-cyan-500 hover:scale-105 hover:shadow-xl hover:shadow-cyan-300/40 transition-all duration-300 text-white px-6 py-2 rounded-xl font-semibold">
-
-            Sign Up
-
-          </button>
+          <Link to="/register">
+            <Button>
+              Sign Up
+            </Button>
+          </Link>
 
         </div>
 

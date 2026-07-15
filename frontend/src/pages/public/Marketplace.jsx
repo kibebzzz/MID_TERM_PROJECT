@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import products from "../../data/products";
 
@@ -6,11 +7,22 @@ import SearchBar from "../../components/marketplace/SearchBar";
 import CategoryFilter from "../../components/marketplace/CategoryFilter";
 import SortDropdown from "../../components/marketplace/SortDropdown";
 import ProductCard from "../../components/marketplace/ProductCard";
+import PageWrapper from "../../components/common/PageWrapper";
 
 const Marketplace = () => {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
+
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const searchQuery = searchParams.get("search");
+
+    if (searchQuery) {
+      setSearch(searchQuery);
+    }
+  }, [searchParams]);
 
   // Filter products
   let filteredProducts = products.filter((product) => {
@@ -26,7 +38,7 @@ const Marketplace = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Create a copy before sorting
+  // Sort products
   const sortedProducts = [...filteredProducts];
 
   switch (sortBy) {
@@ -47,10 +59,13 @@ const Marketplace = () => {
   }
 
   return (
+
+    <PageWrapper> 
     <section className="max-w-7xl mx-auto px-8 py-20">
 
       {/* Header */}
       <div className="mb-10">
+
         <p className="uppercase tracking-[0.3em] text-cyan-500 font-semibold">
           Palette
         </p>
@@ -63,9 +78,11 @@ const Marketplace = () => {
           Discover music, paintings, photography, digital art,
           fashion and more from Kenya's most talented creators.
         </p>
+
       </div>
 
       {/* Search + Sort */}
+
       <div className="mt-10 flex flex-col lg:flex-row gap-6 justify-between items-center">
 
         <SearchBar
@@ -81,34 +98,45 @@ const Marketplace = () => {
       </div>
 
       {/* Categories */}
+
       <CategoryFilter
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
       />
 
       {/* Product Count */}
+
       <div className="flex justify-between items-center mt-10 mb-6">
 
         <h2 className="text-xl font-semibold">
+
           Showing{" "}
+
           <span className="text-cyan-500">
+
             {sortedProducts.length}
+
           </span>{" "}
+
           Creative Works
+
         </h2>
 
       </div>
 
       {/* Product Grid */}
+
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
 
         {sortedProducts.length > 0 ? (
 
           sortedProducts.map((product) => (
+
             <ProductCard
               key={product.id}
               product={product}
             />
+
           ))
 
         ) : (
@@ -120,11 +148,15 @@ const Marketplace = () => {
             </div>
 
             <h2 className="text-3xl font-bold mt-6">
+
               No Creative Works Found
+
             </h2>
 
             <p className="text-gray-500 mt-4">
+
               Try another search or category.
+
             </p>
 
             <button
@@ -145,6 +177,8 @@ const Marketplace = () => {
       </div>
 
     </section>
+
+    </PageWrapper>
   );
 };
 
