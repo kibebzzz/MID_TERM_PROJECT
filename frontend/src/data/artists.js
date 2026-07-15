@@ -6,7 +6,6 @@ const artists = [
     verified: true,
     rating: 4.9,
     bio: "Award-winning Kenyan painter inspired by African landscapes and contemporary culture.",
-    avatar: "https://i.pravatar.cc/300?img=25"
   },
 
   {
@@ -25,7 +24,6 @@ const artists = [
     verified: false,
     rating: 4.7,
     bio: "Wildlife and landscape photographer capturing Kenya's natural beauty.",
-    avatar: "https://i.pravatar.cc/300?img=27"
   },
 
   {
