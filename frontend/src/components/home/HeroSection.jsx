@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Button from "../ui/Button";
 
 const HeroSection = () => {
   return (
@@ -41,14 +42,14 @@ const HeroSection = () => {
           <div className="flex gap-5 mt-12">
 
             <Link to="/marketplace">
-              <button className="bg-gradient-to-r from-cyan-400 to-cyan-500 hover:scale-105 hover:shadow-xl hover:shadow-cyan-300/50 transition-all duration-300 px-8 py-4 rounded-xl text-white font-semibold">
-                Explore Marketplace
-              </button>
+              <Button>
+  Explore Marketplace
+</Button>
             </Link>
 
-            <button className="border border-gray-300 bg-white/60 backdrop-blur-sm hover:border-cyan-400 hover:scale-105 transition-all duration-300 px-8 py-4 rounded-xl">
-              Become a Creator
-            </button>
+            <Button variant="outline">
+  Become a Creator
+</Button>
 
           </div>
         </motion.div>
