@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { WishlistProvider } from "./context/WishlistContext";
 import { CartProvider } from "./context/CartContext";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./context/AuthContext";
 
 import "./index.css";
 import App from "./App";
@@ -11,35 +12,37 @@ import App from "./App";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <CartProvider>
-  <WishlistProvider>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
 
-    <App />
+            <App />
 
-    <Toaster
-  position="top-right"
-  reverseOrder={false}
-  toastOptions={{
-    duration: 2500,
-    style: {
-      background: "#ffffff",
-      color: "#111827",
-      borderRadius: "16px",
-      padding: "16px",
-      border: "1px solid #E5E7EB",
-      boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
-    },
-    success: {
-      iconTheme: {
-        primary: "#06B6D4",
-        secondary: "#ffffff",
-      },
-    },
-  }}
-/>
+            <Toaster
+              position="top-right"
+              reverseOrder={false}
+              toastOptions={{
+                duration: 2500,
+                style: {
+                  background: "#ffffff",
+                  color: "#111827",
+                  borderRadius: "16px",
+                  padding: "16px",
+                  border: "1px solid #E5E7EB",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
+                },
+                success: {
+                  iconTheme: {
+                    primary: "#06B6D4",
+                    secondary: "#ffffff",
+                  },
+                },
+              }}
+            />
 
-  </WishlistProvider>
-</CartProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

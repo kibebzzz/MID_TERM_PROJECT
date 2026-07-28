@@ -19,6 +19,8 @@ import AdminLayout from "../layouts/AdminLayout";
 import BuyerDashboard from "../pages/buyer/Dashboard";
 import ArtistDashboard from "../pages/artist/Dashboard";
 import AdminDashboard from "../pages/admin/Dashboard";
+import ProtectedRoute from "./ProtectedRoute";
+import UploadProduct from "../pages/artist/UploadProduct";
 
 const AppRoutes = () => {
   return (
@@ -38,17 +40,40 @@ const AppRoutes = () => {
   <Route path="/register" element={<Register />} />
   <Route path="/forgot-password" element={<ForgotPassword />} />
   <Route path="*" element={<NotFound />} />
-  <Route path="/buyer" element={<BuyerLayout />}>
+  <Route
+  path="/buyer"
+  element={
+    <ProtectedRoute roles={["BUYER"]}>
+      <BuyerLayout />
+    </ProtectedRoute>
+  }
+>
   <Route index element={<BuyerDashboard />} />
 </Route>
 
-<Route path="/artist" element={<ArtistLayout />}>
+<Route
+  path="/artist"
+  element={
+    <ProtectedRoute roles={["ARTIST"]}>
+      <ArtistLayout />
+    </ProtectedRoute>
+  }
+>
   <Route index element={<ArtistDashboard />} />
 </Route>
 
-<Route path="/admin" element={<AdminLayout />}>
+<Route
+  path="/admin"
+  element={
+    <ProtectedRoute roles={["ADMIN"]}>
+      <AdminLayout />
+    </ProtectedRoute>
+  }
+>
   <Route index element={<AdminDashboard />} />
 </Route>
+
+<Route path="upload" element={<UploadProduct />} />
 </Routes>
   </AnimatePresence>
   );

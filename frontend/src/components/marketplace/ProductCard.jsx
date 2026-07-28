@@ -1,29 +1,23 @@
 import { Heart, Eye, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import artists from "../../data/artists";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
 
 const ProductCard = ({ product }) => {
   const { toggleWishlist, isWishlisted } = useWishlist();
-const { addToCart } = useCart();
-
-  const artist = artists.find(
-    (item) => item.name === product.artist
-  );
+  const { addToCart } = useCart();
 
   return (
     <div className="group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
 
-      {/* Image */}
-
       <Link to={`/work/${product.id}`}>
-
         <div className="relative">
-
           <img
-            src={product.image}
+            src={
+              product.imageUrls?.[0] ||
+              "https://placehold.co/600x600?text=Palette"
+            }
             alt={product.title}
             className="w-full h-80 object-cover"
           />
@@ -44,91 +38,55 @@ const { addToCart } = useCart();
               }
             />
           </button>
-
         </div>
-
       </Link>
-
-      {/* Content */}
 
       <div className="p-6">
 
         <div className="flex justify-between items-center">
 
           <span className="text-sm text-cyan-500 font-semibold">
-            {product.category}
+            {product.category.replaceAll("_", " ")}
           </span>
 
-          <span className="text-xs bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full">
-            New
-          </span>
+          {product.featured && (
+            <span className="text-xs bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full">
+              Featured
+            </span>
+          )}
 
         </div>
 
         <Link to={`/work/${product.id}`}>
-
           <h3 className="text-2xl font-semibold mt-3 group-hover:text-cyan-500 transition-colors">
-
             {product.title}
-
           </h3>
-
         </Link>
 
-        <div className="flex items-center justify-between mt-3">
-
-          {artist ? (
-
-            <Link
-              to={`/artists/${artist.id}`}
-              className="text-gray-500 hover:text-cyan-500 hover:underline"
-            >
-              by {product.artist}
-            </Link>
-
-          ) : (
-
-            <p className="text-gray-500">
-              by {product.artist}
-            </p>
-
-          )}
-
-          <span className="text-yellow-500 font-medium">
-            ⭐ {product.rating}
-          </span>
-
-        </div>
+        <p className="text-gray-500 mt-3">
+          by {product.artist.fullName}
+        </p>
 
         <div className="flex justify-between items-center mt-6">
 
           <h2 className="text-2xl font-bold">
-
-            KSh {product.price.toLocaleString()}
-
+            KSh {Number(product.price).toLocaleString()}
           </h2>
 
           <div className="flex gap-3">
 
             <Link to={`/work/${product.id}`}>
-
               <button className="p-2 rounded-full border hover:bg-cyan-400 hover:text-white transition">
-
                 <Eye size={18} />
-
               </button>
-
             </Link>
 
             <button
-  onClick={(e) => {
-    e.preventDefault();
-    addToCart(product);
-  }}
-  className="p-2 rounded-full bg-cyan-400 text-white hover:scale-110 transition"
->
-  <ShoppingCart size={18} />
-</button>
+              onClick={() => addToCart(product)}
+              className="p-2 rounded-full bg-cyan-400 text-white hover:scale-110 transition"
+            >
+              <ShoppingCart size={18} />
+            </button>
 
           </div>
 
