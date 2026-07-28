@@ -4,19 +4,24 @@ import toast from "react-hot-toast";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import PageWrapper from "../../components/common/PageWrapper";
+import { createProduct } from "../../services/productService";
+import { uploadImage } from "../../services/uploadService";
 
 const UploadProduct = () => {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    price: "",
-    category: "PAINTING",
-    quantity: 1,
-    featured: false,
-    imageUrls: "",
-  });
+  title: "",
+  description: "",
+  price: "",
+  category: "PAINTING",
+  quantity: 1,
+  featured: false,
+  imageUrls: "",
+});
+
+const [selectedImage, setSelectedImage] = useState(null);
+const [preview, setPreview] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -26,6 +31,16 @@ const UploadProduct = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  setSelectedImage(file);
+
+  setPreview(URL.createObjectURL(file));
+};
 
   const handleSubmit = async () => {
     if (
@@ -39,31 +54,37 @@ const UploadProduct = () => {
 
     setLoading(true);
 
+    let imageUrl = "";
+
+if (selectedImage) {
+  const uploadResponse = await uploadImage(selectedImage);
+
+  if (!uploadResponse.success) {
+    toast.error(uploadResponse.message);
+
+    setLoading(false);
+    return;
+  }
+
+  imageUrl = uploadResponse.imageUrl;
+}
+
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 
-      const response = await fetch("http://localhost:5000/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: formData.title,
-          description: formData.description,
-          price: Number(formData.price),
-          category: formData.category,
-          quantity: Number(formData.quantity),
-          featured: formData.featured,
-          imageUrls: formData.imageUrls
-            ? [formData.imageUrls]
-            : [],
-          artistId: user.id,
-        }),
-      });
+      const response = await createProduct({
+  title: formData.title,
+  description: formData.description,
+  price: Number(formData.price),
+  category: formData.category,
+  quantity: Number(formData.quantity),
+  featured: formData.featured,
+  imageUrls: imageUrl ? [imageUrl] : [],
+  artistId: user.id,
+});
 
-      const data = await response.json();
 
-      if (data.success) {
+      if (response.success) {
         toast.success("Product uploaded successfully!");
 
         setFormData({
@@ -77,7 +98,7 @@ const UploadProduct = () => {
         });
 
       } else {
-        toast.error(data.message);
+        toast.error(response.message);
       }
 
     } catch (error) {
@@ -126,12 +147,30 @@ const UploadProduct = () => {
             onChange={handleChange}
           />
 
-          <Input
-            name="imageUrls"
-            placeholder="Image URL"
-            value={formData.imageUrls}
-            onChange={handleChange}
-          />
+          <div>
+
+  <label className="block mb-2 font-medium">
+    Product Image
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageChange}
+    className="w-full border rounded-xl p-3"
+  />
+
+</div>
+
+{preview && (
+  <div className="mt-6">
+    <img
+      src={preview}
+      alt="Preview"
+      className="w-64 h-64 object-cover rounded-2xl border shadow"
+    />
+  </div>
+)}
 
           <Input
             name="quantity"

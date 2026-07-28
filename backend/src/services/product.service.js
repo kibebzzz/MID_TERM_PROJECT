@@ -50,3 +50,49 @@ export const deleteProduct = async (id) => {
     where: { id },
   });
 };
+
+export const getArtistDashboardStats = async (artistId) => {
+  const totalProducts = await prisma.product.count({
+    where: {
+      artistId,
+    },
+  });
+
+  const featuredProducts = await prisma.product.count({
+    where: {
+      artistId,
+      featured: true,
+    },
+  });
+
+  const products = await prisma.product.findMany({
+    where: {
+      artistId,
+    },
+    select: {
+      price: true,
+      quantity: true,
+    },
+  });
+
+  const inventoryValue = products.reduce((total, product) => {
+    return total + Number(product.price) * product.quantity;
+  }, 0);
+
+  return {
+    totalProducts,
+    featuredProducts,
+    inventoryValue,
+  };
+};
+
+export const getProductsByArtist = async (artistId) => {
+  return await prisma.product.findMany({
+    where: {
+      artistId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+};

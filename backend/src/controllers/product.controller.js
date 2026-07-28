@@ -4,6 +4,8 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
+  getArtistDashboardStats,
+  getProductsByArtist,
 } from "../services/product.service.js";
 
 export const create = async (req, res) => {
@@ -89,6 +91,39 @@ export const remove = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+export const getDashboardStats = async (req, res) => {
+  try {
+    const stats = await getArtistDashboardStats(req.params.artistId);
+
+    res.json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getArtistProducts = async (req, res) => {
+  try {
+    const products = await getProductsByArtist(req.params.artistId);
+
+    res.status(200).json({
+      success: true,
+      data: products,
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
       message: error.message,
     });

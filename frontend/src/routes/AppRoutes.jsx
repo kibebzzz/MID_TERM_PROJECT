@@ -21,6 +21,10 @@ import ArtistDashboard from "../pages/artist/Dashboard";
 import AdminDashboard from "../pages/admin/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import UploadProduct from "../pages/artist/UploadProduct";
+import ManageProducts from "../pages/artist/ManageProducts";
+import Analytics from "../pages/artist/Analytics";
+import Verification from "../pages/artist/Verification";
+import ArtistSettings from "../pages/artist/ArtistSettings";
 
 const AppRoutes = () => {
   return (
@@ -60,6 +64,16 @@ const AppRoutes = () => {
   }
 >
   <Route index element={<ArtistDashboard />} />
+
+  <Route path="upload" element={<UploadProduct />} />
+
+  <Route path="products" element={<ManageProducts />} />
+
+  <Route path="analytics" element={<Analytics />} />
+
+  <Route path="verification" element={<Verification />} />
+
+  <Route path="settings" element={<ArtistSettings />} />
 </Route>
 
 <Route
@@ -73,7 +87,6 @@ const AppRoutes = () => {
   <Route index element={<AdminDashboard />} />
 </Route>
 
-<Route path="upload" element={<UploadProduct />} />
 </Routes>
   </AnimatePresence>
   );
