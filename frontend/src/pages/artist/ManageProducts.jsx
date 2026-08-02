@@ -6,6 +6,7 @@ import {
     getArtistProducts,
     deleteProduct,
  } from "../../services/productService";
+ import { Link } from "react-router-dom";
 
 const ManageProducts = () => {
   const { user } = useAuth();
@@ -67,9 +68,11 @@ const ManageProducts = () => {
 
               <div className="flex gap-3">
 
-                <button className="p-3 rounded-xl bg-cyan-500 text-white">
-                  <Pencil size={18} />
-                </button>
+<Link to={`/artist/products/edit/${product.id}`}>
+  <button className="p-3 rounded-xl bg-cyan-500 text-white hover:bg-cyan-600 transition">
+    <Pencil size={18} />
+  </button>
+</Link>
 
                 <button
   onClick={() => handleDelete(product.id)}

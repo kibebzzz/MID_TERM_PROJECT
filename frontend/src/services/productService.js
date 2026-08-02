@@ -70,3 +70,62 @@ export const createProduct = async (product) => {
     };
   }
 };
+
+export const updateProduct = async (id, product) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      }
+    );
+
+    return await response.json();
+
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      message: "Unable to update product.",
+    };
+  }
+};
+
+export const getProductById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`);
+
+    return await response.json();
+
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      message: "Unable to fetch product.",
+    };
+  }
+};
+
+export const getArtistStats = async (artistId) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/artist/${artistId}/stats`
+    );
+
+    return await response.json();
+
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      message: "Unable to load analytics.",
+    };
+  }
+};

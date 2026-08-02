@@ -13,15 +13,32 @@ import Button from "../ui/Button";
 import Logo from "../../assets/logos/logo";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
   const { wishlist } = useWishlist();
-  const { cart } = useCart();
+  const { itemCount } = useCart();
+
+const { user, logout, isAuthenticated } = useAuth();
 
   const [search, setSearch] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const isBuyer = user?.role === "BUYER";
+const isArtist = user?.role === "ARTIST";
+const isAdmin = user?.role === "ADMIN";
+
+const dashboardPath = isBuyer
+  ? "/buyer"
+  : isArtist
+  ? "/artist"
+  : isAdmin
+  ? "/admin"
+  : "/";
+
+  const homePath = isAuthenticated ? dashboardPath : "/";
 
   const handleSearch = (e) => {
     if (e.key === "Enter" && search.trim()) {
@@ -43,9 +60,9 @@ const Navbar = () => {
 
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
 
-          <NavLink to="/">
+          <NavLink to={homePath}>
             <Logo />
-          </NavLink>
+        </NavLink>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-10">
@@ -86,54 +103,83 @@ const Navbar = () => {
           {/* Desktop Right */}
           <div className="hidden md:flex items-center gap-4">
 
-            <Link to="/wishlist">
-              <div className="relative">
+            {(!isAuthenticated || isBuyer) && (
+  <>
+    <Link to="/wishlist">
+      <div className="relative">
 
-                <Heart
-                  size={22}
-                  className="text-gray-700 hover:text-red-500 transition"
-                />
+        <Heart
+          size={22}
+          className="text-gray-700 hover:text-red-500 transition"
+        />
 
-                {wishlist.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                    {wishlist.length}
-                  </span>
-                )}
+        {wishlist.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+            {wishlist.length}
+          </span>
+        )}
 
-              </div>
-            </Link>
+      </div>
+    </Link>
 
-            <Link to="/cart">
-              <div className="relative">
+    <Link to="/cart">
+      <div className="relative">
 
-                <ShoppingCart
-                  size={22}
-                  className="text-gray-700 hover:text-cyan-500 transition"
-                />
+        <ShoppingCart
+          size={22}
+          className="text-gray-700 hover:text-cyan-500 transition"
+        />
 
-                {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                    {cart.reduce(
-                      (total, item) => total + item.quantity,
-                      0
-                    )}
-                  </span>
-                )}
+        {itemCount > 0 && (
+          <span className="absolute -top-2 -right-2 bg-cyan-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+            {itemCount}
+          </span>
+        )}
 
-              </div>
-            </Link>
+      </div>
+    </Link>
+  </>
+)}
 
-            <Link to="/login">
-              <Button variant="outline">
-                Login
-              </Button>
-            </Link>
+            {isAuthenticated ? (
+  <div className="flex items-center gap-3">
 
-            <Link to="/register">
-              <Button>
-                Sign Up
-              </Button>
-            </Link>
+  <span className="font-medium">
+    {user.fullName}
+  </span>
+
+  <Button
+    onClick={() => navigate(dashboardPath)}
+  >
+    Dashboard
+  </Button>
+
+  <Button
+    variant="outline"
+    onClick={() => {
+      logout();
+      navigate("/");
+    }}
+  >
+    Logout
+  </Button>
+
+</div>
+) : (
+  <>
+    <Link to="/login">
+      <Button variant="outline">
+        Login
+      </Button>
+    </Link>
+
+    <Link to="/register">
+      <Button>
+        Sign Up
+      </Button>
+    </Link>
+  </>
+)}
 
           </div>
 
@@ -204,27 +250,65 @@ const Navbar = () => {
 
                 <hr />
 
-                <NavLink to="/wishlist" onClick={() => setMobileOpen(false)}>
-                  ❤️ Wishlist
-                </NavLink>
+                {(!isAuthenticated || isBuyer) && (
+  <>
+    <NavLink
+      to="/wishlist"
+      onClick={() => setMobileOpen(false)}
+    >
+      ❤️ Wishlist
+    </NavLink>
 
-                <NavLink to="/cart" onClick={() => setMobileOpen(false)}>
-                  🛒 Cart
-                </NavLink>
+    <NavLink
+      to="/cart"
+      onClick={() => setMobileOpen(false)}
+    >
+      🛒 Cart
+    </NavLink>
 
-                <hr />
+    <hr />
+  </>
+)}
 
-                <Link to="/login" onClick={() => setMobileOpen(false)}>
-                  <Button variant="outline" className="w-full">
-                    Login
-                  </Button>
-                </Link>
+                {isAuthenticated ? (
+  <>
+    <Button
+      className="w-full"
+      onClick={() => {
+        navigate(dashboardPath);
+        setMobileOpen(false);
+      }}
+    >
+      Dashboard
+    </Button>
 
-                <Link to="/register" onClick={() => setMobileOpen(false)}>
-                  <Button className="w-full">
-                    Sign Up
-                  </Button>
-                </Link>
+    <Button
+      variant="outline"
+      className="w-full"
+      onClick={() => {
+        logout();
+        navigate("/");
+        setMobileOpen(false);
+      }}
+    >
+      Logout
+    </Button>
+  </>
+) : (
+  <>
+    <Link to="/login" onClick={() => setMobileOpen(false)}>
+      <Button variant="outline" className="w-full">
+        Login
+      </Button>
+    </Link>
+
+    <Link to="/register" onClick={() => setMobileOpen(false)}>
+      <Button className="w-full">
+        Sign Up
+      </Button>
+    </Link>
+  </>
+)}
 
               </div>
 

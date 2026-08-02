@@ -1,77 +1,126 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 import PageWrapper from "../../components/common/PageWrapper";
-import artists from "../../data/artists";
+import { getArtists } from "../../services/userService";
 
 const Artists = () => {
+  const [artists, setArtists] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadArtists = async () => {
+      const response = await getArtists();
+
+      if (response.success) {
+        setArtists(response.data);
+      }
+
+      setLoading(false);
+    };
+
+    loadArtists();
+  }, []);
+
+  if (loading) {
+    return (
+      <PageWrapper>
+        <section className="max-w-7xl mx-auto px-8 py-20">
+          <h1 className="text-4xl font-bold">
+            Loading artists...
+          </h1>
+        </section>
+      </PageWrapper>
+    );
+  }
+
   return (
     <PageWrapper>
-    <section className="max-w-7xl mx-auto px-8 py-20">
 
-      <div className="mb-12">
+      <section className="max-w-7xl mx-auto px-8 py-20">
 
-        <p className="uppercase tracking-[0.3em] text-cyan-500 font-semibold">
-          Palette
-        </p>
+        <div className="mb-12">
 
-        <h1 className="text-5xl font-black mt-3">
-          Featured Creators
-        </h1>
+          <p className="uppercase tracking-[0.3em] text-cyan-500 font-semibold">
+            Palette
+          </p>
 
-        <p className="text-gray-500 mt-5 max-w-2xl">
-          Discover talented painters, musicians, photographers,
-          fashion designers and digital creators on Palette.
-        </p>
+          <h1 className="text-5xl font-black mt-3">
+            Featured Creators
+          </h1>
 
-      </div>
+          <p className="text-gray-500 mt-5 max-w-2xl">
+            Discover talented painters, musicians, photographers,
+            fashion designers and digital creators on Palette.
+          </p>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        </div>
 
-        {artists.map((artist) => (
+        {artists.length === 0 ? (
 
-          <Link
-            key={artist.id}
-            to={`/artists/${artist.id}`}
-          >
+          <div className="text-center py-24">
 
-            <div className="bg-white rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-6 text-center">
+            <h2 className="text-3xl font-bold">
+              No Artists Found
+            </h2>
 
-              <img
-                src={artist.avatar}
-                alt={artist.name}
-                className="w-28 h-28 rounded-full mx-auto object-cover"
-              />
+            <p className="text-gray-500 mt-4">
+              Artists will appear here once they join Palette.
+            </p>
 
-              <h2 className="text-2xl font-bold mt-6">
-                {artist.name}
-              </h2>
+          </div>
 
-              <p className="text-gray-500 mt-2">
-                {artist.specialty}
-              </p>
+        ) : (
 
-              <div className="flex justify-center gap-3 mt-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-                <span className="text-yellow-500">
-                  ⭐ {artist.rating}
-                </span>
+            {artists.map((artist) => (
 
-                {artist.verified && (
-                  <span className="text-cyan-500">
-                    ✔ Verified
-                  </span>
-                )}
+              <Link
+                key={artist.id}
+                to={`/artists/${artist.id}`}
+              >
 
-              </div>
+                <div className="bg-white rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 p-6 text-center">
 
-            </div>
+                  <img
+                    src={
+                      artist.profileImage ||
+                      "https://placehold.co/300x300?text=Artist"
+                    }
+                    alt={artist.fullName}
+                    className="w-28 h-28 rounded-full mx-auto object-cover"
+                  />
 
-          </Link>
+                  <h2 className="text-2xl font-bold mt-6">
+                    {artist.fullName}
+                  </h2>
 
-        ))}
+                  <p className="text-gray-500 mt-2">
+                    {artist.artistProfile?.specialty || "Creative Artist"}
+                  </p>
 
-      </div>
+                  <div className="flex justify-center gap-3 mt-4">
 
-    </section>
+                    {artist.artistProfile?.verified && (
+                      <span className="text-cyan-500">
+                        ✔ Verified
+                      </span>
+                    )}
+
+                  </div>
+
+                </div>
+
+              </Link>
+
+            ))}
+
+          </div>
+
+        )}
+
+      </section>
 
     </PageWrapper>
   );

@@ -129,3 +129,4 @@ export const getArtistProducts = async (req, res) => {
     });
   }
 };
+

@@ -5,16 +5,19 @@ export const uploadImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: "No image uploaded.",
+        message: "No file uploaded.",
       });
     }
 
     const file = req.file.buffer.toString("base64");
 
+    // Default folder is "products" if none is provided
+    const folder = req.body.folder || "products";
+
     const result = await cloudinary.uploader.upload(
       `data:${req.file.mimetype};base64,${file}`,
       {
-        folder: "palette/products",
+        folder: `palette/${folder}`,
       }
     );
 
@@ -24,12 +27,11 @@ export const uploadImage = async (req, res) => {
     });
 
   } catch (error) {
-  console.error("Cloudinary Error:", error);
+    console.error("Cloudinary Error:", error);
 
-  res.status(500).json({
-    success: false,
-    message: error.message,
-    error,
-  });
-}
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };

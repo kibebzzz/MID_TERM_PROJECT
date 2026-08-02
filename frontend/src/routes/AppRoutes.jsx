@@ -25,6 +25,9 @@ import ManageProducts from "../pages/artist/ManageProducts";
 import Analytics from "../pages/artist/Analytics";
 import Verification from "../pages/artist/Verification";
 import ArtistSettings from "../pages/artist/ArtistSettings";
+import EditProduct from "../pages/artist/EditProduct";
+import Orders from "../pages/buyer/Orders";
+
 
 const AppRoutes = () => {
   return (
@@ -39,20 +42,29 @@ const AppRoutes = () => {
   <Route path="/work/:id" element={<WorkDetails />}/>
   <Route path="/wishlist" element={<Wishlist />}/>
   <Route path="/artists" element={<Artists />}/>
-  <Route path="/cart" element={<Cart />}/>
+
+  <Route
+  path="/cart"
+  element={
+    <ProtectedRoute roles={["BUYER"]}>
+      <Cart />
+    </ProtectedRoute>
+  }
+/>
+
   <Route path="/login" element={<Login />} />
   <Route path="/register" element={<Register />} />
   <Route path="/forgot-password" element={<ForgotPassword />} />
   <Route path="*" element={<NotFound />} />
-  <Route
-  path="/buyer"
+  
+  <Route path="/buyer"
   element={
     <ProtectedRoute roles={["BUYER"]}>
       <BuyerLayout />
     </ProtectedRoute>
-  }
->
+  } >
   <Route index element={<BuyerDashboard />} />
+  <Route path="orders" element={<Orders />} />
 </Route>
 
 <Route
@@ -74,6 +86,8 @@ const AppRoutes = () => {
   <Route path="verification" element={<Verification />} />
 
   <Route path="settings" element={<ArtistSettings />} />
+
+  <Route path="products/edit/:id" element={<EditProduct />} />
 </Route>
 
 <Route

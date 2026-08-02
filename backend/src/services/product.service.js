@@ -25,23 +25,16 @@ export const getProducts = async () => {
 
 export const getProductById = async (id) => {
   return await prisma.product.findUnique({
-    where: { id },
+    where: {
+      id,
+    },
     include: {
       artist: {
-        select: {
-          id: true,
-          fullName: true,
-          profileImage: true,
+        include: {
+          artistProfile: true,
         },
       },
     },
-  });
-};
-
-export const updateProduct = async (id, data) => {
-  return await prisma.product.update({
-    where: { id },
-    data,
   });
 };
 
@@ -69,9 +62,8 @@ export const getArtistDashboardStats = async (artistId) => {
     where: {
       artistId,
     },
-    select: {
-      price: true,
-      quantity: true,
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -83,6 +75,7 @@ export const getArtistDashboardStats = async (artistId) => {
     totalProducts,
     featuredProducts,
     inventoryValue,
+    products,
   };
 };
 
@@ -96,3 +89,13 @@ export const getProductsByArtist = async (artistId) => {
     },
   });
 };
+
+export const updateProduct = async (id, data) => {
+  return await prisma.product.update({
+    where: {
+      id,
+    },
+    data,
+  });
+};
+

@@ -1,6 +1,5 @@
 # Contributing to Palette
 
-Thank you for contributing to Palette.
 
 This document outlines the project's development standards and workflow.
 

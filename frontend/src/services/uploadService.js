@@ -1,10 +1,14 @@
 import API from "./api";
 
-export const uploadImage = async (file) => {
+export const uploadImage = async (
+  file,
+  folder = "products"
+) => {
   try {
     const formData = new FormData();
 
     formData.append("image", file);
+    formData.append("folder", folder);
 
     const response = await fetch(`${API}/uploads`, {
       method: "POST",
@@ -12,6 +16,7 @@ export const uploadImage = async (file) => {
     });
 
     return await response.json();
+
   } catch (error) {
     console.error(error);
 

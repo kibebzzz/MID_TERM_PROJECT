@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 
 const ProductCard = ({ product }) => {
   const { toggleWishlist, isWishlisted } = useWishlist();
   const { addToCart } = useCart();
+  const { user, isAuthenticated } = useAuth();
+
+const isBuyer = user?.role === "BUYER";
+const canPurchase = !isAuthenticated || isBuyer;
 
   return (
     <div className="group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
@@ -22,22 +27,24 @@ const ProductCard = ({ product }) => {
             className="w-full h-80 object-cover"
           />
 
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              toggleWishlist(product);
-            }}
-            className="absolute top-4 right-4 bg-white rounded-full p-3 shadow-lg hover:scale-110 transition"
-          >
-            <Heart
-              size={20}
-              className={
-                isWishlisted(product.id)
-                  ? "fill-red-500 text-red-500"
-                  : "text-gray-500"
-              }
-            />
-          </button>
+          {canPurchase && (
+  <button
+    onClick={(e) => {
+      e.preventDefault();
+      toggleWishlist(product);
+    }}
+    className="absolute top-4 right-4 bg-white rounded-full p-3 shadow-lg hover:scale-110 transition"
+  >
+    <Heart
+      size={20}
+      className={
+        isWishlisted(product.id)
+          ? "fill-red-500 text-red-500"
+          : "text-gray-500"
+      }
+    />
+  </button>
+)}
         </div>
       </Link>
 
@@ -64,8 +71,8 @@ const ProductCard = ({ product }) => {
         </Link>
 
         <p className="text-gray-500 mt-3">
-          by {product.artist.fullName}
-        </p>
+  by {product.artist?.fullName || "Unknown Artist"}
+</p>
 
         <div className="flex justify-between items-center mt-6">
 
@@ -75,21 +82,25 @@ const ProductCard = ({ product }) => {
 
           <div className="flex gap-3">
 
-            <Link to={`/work/${product.id}`}>
-              <button className="p-2 rounded-full border hover:bg-cyan-400 hover:text-white transition">
-                <Eye size={18} />
-              </button>
-            </Link>
+  <Link to={`/work/${product.id}`}>
+    <button className="p-2 rounded-full border hover:bg-cyan-400 hover:text-white transition">
+      <Eye size={18} />
+    </button>
+  </Link>
 
-            <button
-              onClick={() => addToCart(product)}
-              className="p-2 rounded-full bg-cyan-400 text-white hover:scale-110 transition"
-            >
-              <ShoppingCart size={18} />
-            </button>
+  {canPurchase && (
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        addToCart(product);
+      }}
+      className="p-2 rounded-full bg-cyan-400 text-white hover:scale-110 transition"
+    >
+      <ShoppingCart size={18} />
+    </button>
+  )}
 
-          </div>
-
+</div>
         </div>
 
       </div>

@@ -1,21 +1,60 @@
 import { Trash2, Plus, Minus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+
+import { checkout } from "../../services/orderService";
 
 const Cart = () => {
+  const navigate = useNavigate();
+
+  const { user } = useAuth();
+
   const {
     cart,
+    total,
+    loading,
+    emptyCart,
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
   } = useCart();
 
-  const subtotal = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const handleCheckout = async () => {
+    if (!user) {
+      toast.error("Please login first.");
+      return;
+    }
+
+    const response = await checkout(user.id);
+
+    if (response.success) {
+      toast.success("Order placed successfully!");
+
+      await emptyCart();
+
+      navigate("/buyer/orders");
+    } else {
+      toast.error(response.message);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="max-w-7xl mx-auto px-8 py-20">
+        <h1 className="text-4xl font-black">
+          Loading Cart...
+        </h1>
+      </section>
+    );
+  }
 
   return (
     <section className="max-w-7xl mx-auto px-8 py-20">
+
+      {/* Header */}
 
       <div className="mb-10">
 
@@ -46,8 +85,15 @@ const Cart = () => {
           </h2>
 
           <p className="text-gray-500 mt-4">
-            Browse the marketplace and add some creative works.
+            Browse the marketplace and discover amazing creative works.
           </p>
+
+          <Link
+            to="/marketplace"
+            className="inline-block mt-8 bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-4 rounded-2xl transition"
+          >
+            Browse Marketplace
+          </Link>
 
         </div>
 
@@ -55,7 +101,7 @@ const Cart = () => {
 
         <div className="grid lg:grid-cols-3 gap-12">
 
-          {/* Items */}
+          {/* Cart Items */}
 
           <div className="lg:col-span-2 space-y-6">
 
@@ -67,27 +113,27 @@ const Cart = () => {
               >
 
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={
+                    item.product.imageUrls?.[0] ||
+                    "https://placehold.co/400x400?text=Palette"
+                  }
+                  alt={item.product.title}
                   className="w-40 h-40 rounded-2xl object-cover"
                 />
 
                 <div className="flex-1">
 
                   <p className="text-cyan-500 font-semibold">
-                    {item.category}
+                    {item.product.category.replaceAll("_", " ")}
                   </p>
 
                   <h2 className="text-2xl font-bold mt-2">
-                    {item.title}
+                    {item.product.title}
                   </h2>
 
-                  <p className="text-gray-500 mt-2">
-                    by {item.artist}
-                  </p>
-
                   <h3 className="text-2xl font-bold mt-5">
-                    KSh {item.price.toLocaleString()}
+                    KSh{" "}
+                    {Number(item.product.price).toLocaleString()}
                   </h3>
 
                 </div>
@@ -96,7 +142,7 @@ const Cart = () => {
 
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 transition"
                   >
                     <Trash2 />
                   </button>
@@ -104,8 +150,8 @@ const Cart = () => {
                   <div className="flex items-center gap-4">
 
                     <button
-                      onClick={() => decreaseQuantity(item.id)}
-                      className="p-2 rounded-full bg-gray-100"
+                      onClick={() => decreaseQuantity(item)}
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
                     >
                       <Minus size={16} />
                     </button>
@@ -115,8 +161,8 @@ const Cart = () => {
                     </span>
 
                     <button
-                      onClick={() => increaseQuantity(item.id)}
-                      className="p-2 rounded-full bg-cyan-500 text-white"
+                      onClick={() => increaseQuantity(item)}
+                      className="p-2 rounded-full bg-cyan-500 text-white hover:bg-cyan-600 transition"
                     >
                       <Plus size={16} />
                     </button>
@@ -144,7 +190,7 @@ const Cart = () => {
               <span>Subtotal</span>
 
               <span>
-                KSh {subtotal.toLocaleString()}
+                KSh {total.toLocaleString()}
               </span>
 
             </div>
@@ -164,15 +210,23 @@ const Cart = () => {
               <span>Total</span>
 
               <span>
-                KSh {subtotal.toLocaleString()}
+                KSh {total.toLocaleString()}
               </span>
 
             </div>
 
-            <button className="w-full mt-10 bg-cyan-500 hover:bg-cyan-600 text-white py-4 rounded-2xl transition">
-
+            <button
+              onClick={handleCheckout}
+              className="w-full mt-10 bg-cyan-500 hover:bg-cyan-600 text-white py-4 rounded-2xl transition"
+            >
               Proceed to Checkout
+            </button>
 
+            <button
+              onClick={emptyCart}
+              className="w-full mt-4 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-4 rounded-2xl transition"
+            >
+              Clear Cart
             </button>
 
           </div>

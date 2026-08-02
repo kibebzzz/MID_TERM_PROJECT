@@ -6,7 +6,11 @@
 
 **Institution:** United States International University – Africa (USIU-Africa)
 
-**Project Owner:** Esther Wambui
+**Project Owners:**  
+Keith Chege
+Claire Nyuguto
+Brandon Waiyaki
+
 
 **Development Start Date:** July 2026
 
@@ -246,6 +250,167 @@ Frontend integration in progress.
 
 ---
 
+---
+
+# Sprint 5 — Product Management & Marketplace Integration
+
+**Status:** ✅ Completed
+
+## Objectives
+
+Develop a complete product management system for artists and integrate the marketplace with the backend.
+
+## Activities Completed
+
+- Designed Product database model.
+- Added ProductCategory enum.
+- Implemented Product CRUD APIs.
+- Developed product service layer.
+- Implemented product controller.
+- Created product routes.
+- Connected frontend to backend.
+- Replaced static marketplace data with PostgreSQL data.
+- Implemented artist-specific product retrieval.
+- Added dashboard product statistics.
+
+## Features Completed
+
+- Upload Product
+- View Products
+- Delete Product
+- Dynamic Marketplace
+- Search
+- Category Filtering
+- Product Sorting
+
+## Challenges Encountered
+
+### Static marketplace data became difficult to maintain.
+
+**Resolution**
+
+Migrated marketplace data from local JSON files to PostgreSQL using Prisma ORM.
+
+---
+
+### Product statistics required multiple database queries.
+
+**Resolution**
+
+Created dedicated statistics endpoint that aggregates artist products efficiently.
+
+## Outcome
+
+Artists can now upload products which immediately appear inside the marketplace.
+
+---
+
+# Sprint 6 — Artist Dashboard
+
+**Status:** ✅ Completed
+
+## Objectives
+
+Develop a dedicated dashboard for artists.
+
+## Activities Completed
+
+- Designed Artist Layout.
+- Implemented protected dashboard routing.
+- Created dashboard navigation.
+- Developed dashboard overview.
+- Added statistics cards.
+- Connected dashboard with backend APIs.
+
+## Features Completed
+
+- Dashboard Home
+- Product Statistics
+- Upload Product
+- Manage Products
+
+## Challenges Encountered
+
+### Dashboard layouts conflicted with the public website navigation.
+
+**Resolution**
+
+Separated the application into dedicated layouts:
+
+- Public Layout
+- Artist Layout
+- Buyer Layout
+- Admin Layout
+
+## Outcome
+
+Artists now have an independent workspace separate from the public marketplace.
+
+---
+
+# Sprint 7 — Cloudinary Image Upload Integration
+
+**Status:** ✅ Completed
+
+## Objectives
+
+Replace manual image URLs with a professional image upload workflow.
+
+## Activities Completed
+
+- Configured Cloudinary.
+- Configured Multer middleware.
+- Created Upload API.
+- Built frontend upload service.
+- Connected React frontend to upload endpoint.
+- Added image preview functionality.
+
+## Features Completed
+
+- Image Selection
+- Image Preview
+- Cloudinary Upload
+- Secure Image URLs
+- Automatic Product Image Storage
+
+## Upload Workflow
+
+Choose Image
+
+↓
+
+Preview Image
+
+↓
+
+Upload to Cloudinary
+
+↓
+
+Receive Secure URL
+
+↓
+
+Save Product
+
+↓
+
+Display Product in Marketplace
+
+## Challenges Encountered
+
+### Thunder Client free version does not support file uploads.
+
+**Resolution**
+
+Integrated the upload workflow directly into the frontend for real-world testing.
+
+## Outcome
+
+Artists can now upload images directly from the application without manually entering image URLs.
+
+---
+
 # Future Planned Sprints
 
 ## Sprint 5
@@ -352,7 +517,12 @@ These principles will continue guiding future development.
 | 0.2 | Frontend Foundation |
 | 0.3 | Backend Foundation |
 | 0.4 | Authentication Backend |
-| 0.5 | Frontend Authentication (Current) |
+| 0.5 | Frontend Authentication |
+| 0.6 | Product Management |
+| 0.7 | Artist Dashboard |
+| 0.8 | Marketplace Integration |
+| 0.9 | Cloudinary Image Uploads |
+| 1.0 | Current Development Milestone |
 
 ---
 

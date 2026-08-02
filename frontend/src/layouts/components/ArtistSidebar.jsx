@@ -8,8 +8,15 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const ArtistSidebar = () => {
+
+    const { logout } = useAuth();
+
+const navigate = useNavigate();
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-3 rounded-xl transition ${
       isActive
@@ -56,10 +63,19 @@ const ArtistSidebar = () => {
           Settings
         </NavLink>
 
-        <button className="flex items-center gap-3 px-4 py-3 rounded-xl w-full hover:bg-red-50 text-red-500 transition">
-          <LogOut size={20} />
-          Logout
-        </button>
+        <button
+  onClick={() => {
+    logout();
+
+    toast.success("Logged out successfully.");
+
+    navigate("/");
+  }}
+  className="flex items-center gap-3 px-4 py-3 rounded-xl w-full hover:bg-red-50 text-red-500 transition"
+>
+  <LogOut size={20} />
+  Logout
+</button>
 
       </nav>
 
