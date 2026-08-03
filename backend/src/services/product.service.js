@@ -8,25 +8,33 @@ export const createProduct = async (data) => {
 
 export const getProducts = async () => {
   return await prisma.product.findMany({
-    include: {
-      artist: {
-        select: {
-          id: true,
-          fullName: true,
-          profileImage: true,
-        },
+
+  where: {
+    isAvailable: true,
+  },
+
+  include: {
+    artist: {
+      select: {
+        id: true,
+        fullName: true,
+        profileImage: true,
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  },
+
+  orderBy: {
+    createdAt: "desc",
+  },
+
+});
 };
 
 export const getProductById = async (id) => {
   return await prisma.product.findUnique({
     where: {
       id,
+      isAvailable: true,
     },
     include: {
       artist: {
@@ -39,9 +47,26 @@ export const getProductById = async (id) => {
 };
 
 export const deleteProduct = async (id) => {
-  return await prisma.product.delete({
-    where: { id },
+
+  const product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
   });
+
+  if (!product) {
+    throw new Error("Product not found.");
+  }
+
+  return await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      isAvailable: false,
+    },
+  });
+
 };
 
 export const getArtistDashboardStats = async (artistId) => {
@@ -82,8 +107,9 @@ export const getArtistDashboardStats = async (artistId) => {
 export const getProductsByArtist = async (artistId) => {
   return await prisma.product.findMany({
     where: {
-      artistId,
-    },
+  artistId,
+  isAvailable: true,
+},
     orderBy: {
       createdAt: "desc",
     },
@@ -97,5 +123,28 @@ export const updateProduct = async (id, data) => {
     },
     data,
   });
+};
+
+export const toggleFeaturedProduct = async (id) => {
+
+  const product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!product) {
+    throw new Error("Product not found.");
+  }
+
+  return await prisma.product.update({
+    where: {
+      id,
+    },
+    data: {
+      featured: !product.featured,
+    },
+  });
+
 };
 

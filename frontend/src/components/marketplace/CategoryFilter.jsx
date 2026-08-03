@@ -7,16 +7,16 @@ const CategoryFilter = ({ selectedCategory, onCategoryChange }) => {
       {categories.map((category) => (
 
         <button
-          key={category}
-          onClick={() => onCategoryChange(category)}
-          className={`px-5 py-2 rounded-full transition-all duration-300 ${
-            selectedCategory === category
-              ? "bg-cyan-500 text-white"
-              : "border border-gray-300 hover:bg-cyan-400 hover:text-white"
-          }`}
-        >
-          {category}
-        </button>
+  key={category.value}
+  onClick={() => onCategoryChange(category.value)}
+  className={`px-5 py-2 rounded-full transition-all duration-300 ${
+    selectedCategory === category.value
+      ? "bg-cyan-500 text-white"
+      : "border border-gray-300 hover:bg-cyan-400 hover:text-white"
+  }`}
+>
+  {category.label}
+</button>
 
       ))}
 

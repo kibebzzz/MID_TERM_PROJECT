@@ -33,14 +33,22 @@ export const getArtistById = async (id) => {
       artistProfile: true,
 
       products: {
-        include: {
-          artist: {
-            include: {
-              artistProfile: true,
-            },
-          },
-        },
+  where: {
+    isAvailable: true,
+  },
+
+  include: {
+    artist: {
+      include: {
+        artistProfile: true,
       },
+    },
+  },
+
+  orderBy: {
+    createdAt: "desc",
+  },
+},
     },
   });
 };
@@ -73,12 +81,31 @@ export const updateProfile = async (userId, data) => {
         userId,
       },
 
-      update: artistProfile,
+      update: {
 
-      create: {
-        userId,
-        ...artistProfile,
-      },
+  ...artistProfile,
+
+  verificationStatus: "PENDING",
+
+  verificationNotes: null,
+
+  verified: false,
+
+},
+
+create: {
+
+  userId,
+
+  ...artistProfile,
+
+  verificationStatus: "PENDING",
+
+  verificationNotes: null,
+
+  verified: false,
+
+},
 
     });
 
@@ -96,4 +123,52 @@ export const updateProfile = async (userId, data) => {
 
   });
 
+};
+
+
+
+export const getVerificationRequests = async () => {
+
+  return await prisma.user.findMany({
+
+    where: {
+      role: "ARTIST",
+
+      artistProfile: {
+        is: {
+          verificationStatus: {
+            in: ["PENDING", "REJECTED"],
+          },
+        },
+      },
+    },
+
+    include: {
+      artistProfile: true,
+    },
+
+    orderBy: {
+      createdAt: "desc",
+    },
+
+  });
+
+};
+
+export const reviewVerification = async (
+  userId,
+  verificationStatus,
+  verificationNotes
+) => {
+  return await prisma.artistProfile.update({
+    where: {
+      userId,
+    },
+
+    data: {
+      verificationStatus,
+      verificationNotes,
+      verified: verificationStatus === "VERIFIED",
+    },
+  });
 };

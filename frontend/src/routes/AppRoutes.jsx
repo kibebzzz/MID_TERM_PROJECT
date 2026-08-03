@@ -27,7 +27,11 @@ import Verification from "../pages/artist/Verification";
 import ArtistSettings from "../pages/artist/ArtistSettings";
 import EditProduct from "../pages/artist/EditProduct";
 import Orders from "../pages/buyer/Orders";
-
+import VerificationRequests from "../pages/admin/VerificationRequests";
+import ReviewVerification from "../pages/admin/ReviewVerification";
+import ProductManagement from "../pages/admin/ProductManagement";
+import UserManagement from "../pages/admin/UserManagement";
+import PlatformAnalytics from "../pages/admin/PlatformAnalytics";
 
 const AppRoutes = () => {
   return (
@@ -56,7 +60,7 @@ const AppRoutes = () => {
   <Route path="/register" element={<Register />} />
   <Route path="/forgot-password" element={<ForgotPassword />} />
   <Route path="*" element={<NotFound />} />
-  
+
   <Route path="/buyer"
   element={
     <ProtectedRoute roles={["BUYER"]}>
@@ -99,6 +103,32 @@ const AppRoutes = () => {
   }
 >
   <Route index element={<AdminDashboard />} />
+
+  <Route
+    path="verification"
+    element={<VerificationRequests />}
+  />
+
+  <Route
+  path="verification/:id"
+  element={<ReviewVerification />}
+/>
+
+<Route
+  path="products"
+  element={<ProductManagement />}
+/>
+
+<Route
+  path="users"
+  element={<UserManagement />}
+/>
+
+<Route
+  path="analytics"
+  element={<PlatformAnalytics />}
+/>
+
 </Route>
 
 </Routes>

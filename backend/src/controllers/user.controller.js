@@ -3,6 +3,8 @@ import {
   getAllArtists,
   getArtistById,
   updateProfile,
+getVerificationRequests,
+    reviewVerification,
 } from "../services/user.service.js";
 
 export const getProfile = async (req, res) => {
@@ -50,4 +52,54 @@ export const updateArtistProfile = async (req, res) => {
     message: "Profile updated.",
     data: profile,
   });
+};
+
+export const getAllVerificationRequests = async (req, res) => {
+  try {
+
+    const requests = await getVerificationRequests();
+
+    res.status(200).json({
+      success: true,
+      data: requests,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
+export const reviewArtistVerification = async (req, res) => {
+  try {
+
+    const {
+      verificationStatus,
+      verificationNotes,
+    } = req.body;
+
+    const profile = await reviewVerification(
+      req.params.id,
+      verificationStatus,
+      verificationNotes
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Verification updated successfully.",
+      data: profile,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
 };

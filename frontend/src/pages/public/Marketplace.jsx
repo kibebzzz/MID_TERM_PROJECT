@@ -17,15 +17,22 @@ const Marketplace = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
 
-  const [searchParams] = useSearchParams();
+const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    const searchQuery = searchParams.get("search");
 
-    if (searchQuery) {
-      setSearch(searchQuery);
-    }
-  }, [searchParams]);
+  const searchQuery = searchParams.get("search");
+  const categoryQuery = searchParams.get("category");
+
+  if (searchQuery) {
+    setSearch(searchQuery);
+  }
+
+  if (categoryQuery) {
+    setSelectedCategory(categoryQuery);
+  }
+
+}, [searchParams]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -41,11 +48,30 @@ const Marketplace = () => {
     fetchProducts();
   }, []);
 
+  const handleCategoryChange = (category) => {
+
+  setSelectedCategory(category);
+
+  const params = new URLSearchParams(searchParams);
+
+  if (category === "All") {
+    params.delete("category");
+  } else {
+    params.set("category", category);
+  }
+
+  setSearchParams(params);
+
+};
+
   let filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.title.toLowerCase().includes(search.toLowerCase()) ||
       product.artist.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      product.category.toLowerCase().includes(search.toLowerCase());
+      product.category
+  .replaceAll("_", " ")
+  .toLowerCase()
+  .includes(search.toLowerCase())
 
     const matchesCategory =
       selectedCategory === "All" ||
@@ -117,9 +143,9 @@ const Marketplace = () => {
         </div>
 
         <CategoryFilter
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
+  selectedCategory={selectedCategory}
+  onCategoryChange={handleCategoryChange}
+/>
 
         <div className="flex justify-between items-center mt-10 mb-6">
           <h2 className="text-xl font-semibold">

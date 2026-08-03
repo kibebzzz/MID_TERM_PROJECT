@@ -129,3 +129,29 @@ export const getArtistStats = async (artistId) => {
     };
   }
 };
+
+export const toggleFeaturedProduct = async (id) => {
+
+  try {
+
+    const response = await fetch(
+      `${API_URL}/${id}/featured`,
+      {
+        method: "PATCH",
+      }
+    );
+
+    return await response.json();
+
+  } catch (error) {
+
+    console.error(error);
+
+    return {
+      success: false,
+      message: "Unable to update featured status.",
+    };
+
+  }
+
+};

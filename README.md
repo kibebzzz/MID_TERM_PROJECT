@@ -304,97 +304,122 @@ Returns the authenticated user's profile.
 
 # Current Development Status
 
-## Completed
+## ✅ Completed
 
-- React application
-- Tailwind CSS configuration
-- Responsive UI
-- Marketplace
-- Artist profiles
+### Frontend
+
+- Responsive public website
+- Dynamic marketplace
+- Dynamic artist profiles
+- Product details
 - Wishlist
-- Shopping cart interface
+- Shopping cart
 - Authentication UI
-- Express backend
+- Buyer dashboard foundation
+- Artist dashboard
+- Artist settings
+- Artist verification
+- Product management
+
+---
+
+### Backend
+
+- Express.js REST API
 - PostgreSQL integration
 - Prisma ORM
-- User model
-- Artist profile model
-- Register API
-- Login API
-- JWT authentication
+- JWT Authentication
 - Protected routes
-
----
-
-## In Progress
-
-- Frontend authentication integration
 - Product CRUD
-- Artist dashboard
+- Artist Profile CRUD
+- Dashboard APIs
+- Cloudinary Upload API
 
 ---
 
-## Planned
+### Cloudinary
 
-- Orders
+- Product image uploads
+- Artist profile image uploads
+- Artist cover image uploads
+- Verification document uploads
+
+---
+
+### Authentication
+
+- Registration
+- Login
+- Persistent sessions
+- Protected routing
+- Role-based authorization
+
+Roles:
+
+- Buyer
+- Artist
+- Administrator
+
+---
+
+## 🚧 Currently In Development
+
+- Buyer Orders
+- Checkout
+- Admin Dashboard
+
+---
+
+## 📋 Planned
+
 - Reviews
-- Payments
-- Admin dashboard
+- Ratings
 - Notifications
-- Image uploads
+- Payment Integration
 - Deployment
 
----
 
 # Development Roadmap
 
 ## Phase 1
-
-- Frontend foundation
-
+Frontend Foundation
 ✅ Complete
-
----
 
 ## Phase 2
-
-- Backend foundation
-
+Backend Foundation
 ✅ Complete
 
----
-
 ## Phase 3
-
-- Authentication integration
-
-🔄 In Progress
-
----
+Authentication
+✅ Complete
 
 ## Phase 4
-
-Marketplace Management
-
-Pending
-
----
+Marketplace Integration
+✅ Complete
 
 ## Phase 5
-
-Orders & Payments
-
-Pending
-
----
+Artist Module
+✅ Complete
 
 ## Phase 6
+Buyer Module
+🔄 In Progress
 
+## Phase 7
+Admin Module
+⏳ Planned
+
+## Phase 8
+Reviews & Ratings
+⏳ Planned
+
+## Phase 9
+Notifications
+⏳ Planned
+
+## Phase 10
 Deployment
-
-Pending
-
----
+⏳ Planned
 
 # Documentation
 

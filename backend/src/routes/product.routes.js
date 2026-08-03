@@ -7,6 +7,7 @@ import {
   remove,
   getDashboardStats,
   getArtistProducts,
+  toggleFeatured,
 } from "../controllers/product.controller.js";
 
 const router = express.Router();
@@ -20,6 +21,11 @@ router.get("/artist/:artistId/stats", getDashboardStats);
 router.get("/artist/:artistId", getArtistProducts);
 
 router.get("/:id", getOne);
+
+router.patch(
+  "/:id/featured",
+  toggleFeatured
+);
 
 router.put("/:id", update);
 

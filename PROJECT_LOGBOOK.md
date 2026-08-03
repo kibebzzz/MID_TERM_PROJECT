@@ -411,38 +411,71 @@ Artists can now upload images directly from the application without manually ent
 
 ---
 
+---
+
+# Sprint 8 — Artist Experience & Profile Management
+
+**Status:** ✅ Completed
+
+## Objectives
+
+Complete the artist workspace and provide a professional profile management experience.
+
+## Activities Completed
+
+- Developed Artist Settings page.
+- Implemented dynamic artist profile retrieval.
+- Connected public artist pages to PostgreSQL.
+- Added profile image uploads.
+- Added cover image uploads.
+- Integrated Cloudinary uploads into profile management.
+- Developed artist verification centre.
+- Added verification document uploads.
+- Added verification status tracking.
+- Improved navigation for authenticated users.
+- Restricted buyer-only functionality from artist accounts.
+
+## Features Completed
+
+- Public Artist Profiles
+- Artist Settings
+- Profile Picture Upload
+- Cover Image Upload
+- Verification Centre
+- Dynamic Portfolio
+- Role-aware Navigation
+- Dashboard Logout
+
+## Challenges Encountered
+
+### Static artist data conflicted with database-driven content.
+
+**Resolution**
+
+Migrated artist profile pages to retrieve data directly from PostgreSQL.
+
+---
+
+### Multiple image upload destinations required better organization.
+
+**Resolution**
+
+Generalized the Cloudinary upload workflow using configurable upload folders.
+
+---
+
+### Artist and buyer navigation required different experiences.
+
+**Resolution**
+
+Implemented role-aware navigation and restricted buyer-specific interactions for artists.
+
+## Outcome
+
+The Artist Module is now functionally complete and fully integrated with the backend.
+
 # Future Planned Sprints
 
-## Sprint 5
-
-Product Management
-
-- CRUD Operations
-- Categories
-- Product Images
-
----
-
-## Sprint 6
-
-Artist Dashboard
-
-- Upload Creative Works
-- Portfolio Management
-- Analytics
-
----
-
-## Sprint 7
-
-Shopping Experience
-
-- Shopping Cart Backend
-- Orders
-- Checkout
-- Order History
-
----
 
 ## Sprint 8
 

@@ -525,53 +525,156 @@ Notifications not implemented.
 
 ---
 
-# Next Release (v2.0.0)
+---
 
-Planned features
+# [1.2.0] - August 2026
 
-Buyer Dashboard
+## 🚀 Major Feature Update
 
-Backend Shopping Cart
-
-Persistent Wishlist
-
-Checkout
-
-Orders
-
-Order History
-
-Product Editing
-
-Multiple Product Images
-
-Product Availability Controls
-
-Admin Dashboard
-
-Artist Verification
-
-Reviews
-
-Ratings
-
-Notifications
-
-Analytics
-
-Recommendations
-
-Pagination
-
-Deployment
+This release significantly expands Palette by introducing a complete Artist Module, dynamic profile management, and enhanced marketplace functionality.
 
 ---
 
+## Added
 
+### Artist Profile Management
 
-# Version History
+Artists can now:
 
-| Version | Date | Description |
-|----------|------------|------------------------------|
-| 0.1.0 | Initial Release | Frontend Prototype |
-| 1.1.0 | July 2026 | Full Stack Marketplace Foundation |
+- Create and update public profiles
+- Upload profile pictures
+- Upload cover images
+- Manage biography
+- Update specialty
+- Update location
+- Add website links
+- Add Instagram links
+- Add Facebook links
+
+Profile and cover images are uploaded directly to Cloudinary.
+
+---
+
+### Artist Verification
+
+Implemented the complete artist verification workflow.
+
+Artists can:
+
+- Submit portfolio URLs
+- Upload government identification
+- Upload business registration certificates
+- Track verification status
+- View administrator feedback
+- Resubmit verification after rejection
+
+Verification statuses:
+
+- Pending
+- Verified
+- Rejected
+
+---
+
+### Dynamic Artist Profiles
+
+Removed dependence on local artist data.
+
+Artist profile pages now retrieve information directly from PostgreSQL including:
+
+- Artist information
+- Portfolio
+- Social links
+- Verification status
+- Uploaded creative works
+
+---
+
+### Marketplace Improvements
+
+Implemented:
+
+- Dynamic Product Details page
+- Database-driven artist navigation
+- Dynamic Featured Artists
+- Dynamic Trending Artwork
+
+Marketplace now retrieves all content from PostgreSQL.
+
+---
+
+### Navigation Improvements
+
+Implemented role-aware navigation.
+
+Guests can:
+
+- Browse marketplace
+- View artists
+- Register
+- Login
+
+Buyers can:
+
+- Access wishlist
+- Access cart
+- Access buyer dashboard
+
+Artists can:
+
+- Return to artist dashboard
+- Browse marketplace
+- Manage products
+- Access profile settings
+
+Wishlist and cart interactions are disabled for artists.
+
+---
+
+### Cloudinary Improvements
+
+Generalized upload architecture.
+
+Uploads now support dedicated folders:
+
+- palette/products
+- palette/artists/profile-images
+- palette/artists/cover-images
+- palette/verification/government-id
+- palette/verification/business-certificate
+
+---
+
+## Changed
+
+- Artist profiles now retrieve live database data.
+- Settings page supports image uploads.
+- Verification now supports document uploads.
+- Marketplace is fully database-driven.
+- Improved dashboard navigation.
+
+---
+
+## Fixed
+
+- Product details routing.
+- Artist profile rendering.
+- Navigation inconsistencies.
+- Role-based navbar behaviour.
+- Artist dashboard access.
+- Logout workflow.
+- Cloudinary upload organization.
+
+---
+
+## Known Limitations
+
+The following modules remain under development:
+
+- Buyer Orders
+- Checkout
+- Reviews
+- Ratings
+- Notifications
+- Admin Dashboard
+- Payment Integration

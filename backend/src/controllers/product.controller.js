@@ -6,6 +6,7 @@ import {
   deleteProduct,
   getArtistDashboardStats,
   getProductsByArtist,
+    toggleFeaturedProduct,
 } from "../services/product.service.js";
 
 export const create = async (req, res) => {
@@ -128,5 +129,30 @@ export const getArtistProducts = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+export const toggleFeatured = async (req, res) => {
+
+  try {
+
+    const product = await toggleFeaturedProduct(
+      req.params.id
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Featured status updated.",
+      data: product,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+
 };
 

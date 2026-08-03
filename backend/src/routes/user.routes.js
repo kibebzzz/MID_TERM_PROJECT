@@ -1,11 +1,16 @@
 import { Router } from "express";
-import { authenticate } from "../middlewares/auth.middleware.js";
+import {
+  authenticate,
+  authorize,
+} from "../middlewares/auth.middleware.js";
 
 import {
   getProfile,
   updateArtistProfile,
   getArtistProfile,
   getArtists,
+    getAllVerificationRequests,
+    reviewArtistVerification,
 } from "../controllers/user.controller.js";
 
 const router = Router();
@@ -21,6 +26,20 @@ router.put(
   "/artists/profile",
   authenticate,
   updateArtistProfile
+);
+
+router.get(
+  "/verification-requests",
+  authenticate,
+  authorize("ADMIN"),
+  getAllVerificationRequests
+);
+
+router.put(
+  "/verification/:id",
+  authenticate,
+  authorize("ADMIN"),
+  reviewArtistVerification
 );
 
 export default router;

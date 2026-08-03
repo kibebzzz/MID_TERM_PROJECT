@@ -34,9 +34,16 @@ export const loginUser = async (data) => {
     },
   });
 
+
   if (!user) {
     throw new Error("Invalid email or password.");
   }
+
+if (!user.isActive) {
+  throw new Error(
+    "Your account has been suspended. Please contact support."
+  );
+}
 
   const passwordMatch = await bcrypt.compare(
     data.password,
