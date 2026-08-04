@@ -32,6 +32,7 @@ import ReviewVerification from "../pages/admin/ReviewVerification";
 import ProductManagement from "../pages/admin/ProductManagement";
 import UserManagement from "../pages/admin/UserManagement";
 import PlatformAnalytics from "../pages/admin/PlatformAnalytics";
+import Checkout from "../pages/buyer/Checkout";
 
 const AppRoutes = () => {
   return (
@@ -69,6 +70,11 @@ const AppRoutes = () => {
   } >
   <Route index element={<BuyerDashboard />} />
   <Route path="orders" element={<Orders />} />
+  <Route
+    path="checkout/:orderId"
+    element={<Checkout />}
+/>
+
 </Route>
 
 <Route

@@ -474,30 +474,134 @@ Implemented role-aware navigation and restricted buyer-specific interactions for
 
 The Artist Module is now functionally complete and fully integrated with the backend.
 
-# Future Planned Sprints
-
-
-## Sprint 8
-
-Review System
-
-- Ratings
-- Reviews
-- Artist Reputation
-
 ---
 
-## Sprint 9
+# Sprint 9 — Administration Module
 
-Administration
+**Status:** ✅ Completed
 
+## Objectives
+
+Develop a complete administration workspace for managing users, products, verification requests, and platform activity.
+
+## Activities Completed
+
+- Designed Admin Layout.
+- Implemented protected admin routing.
+- Developed administrator dashboard.
+- Built product moderation tools.
+- Created verification review workflow.
+- Implemented user management.
+- Developed platform analytics dashboard.
+- Added account suspension.
+- Added role promotion and demotion.
+- Implemented soft product deletion.
+
+## Features Completed
+
+- Admin Dashboard
+- Product Management
+- Verification Review
 - User Management
-- Product Moderation
-- Analytics Dashboard
+- Platform Analytics
+- Product Featuring
+- Soft Delete Products
+- User Suspension
+- User Reactivation
+- Buyer ↔ Artist Role Management
+
+## Challenges Encountered
+
+### Product deletion conflicted with existing order records.
+
+**Resolution**
+
+Replaced permanent deletion with soft deletion using an availability flag.
 
 ---
 
-## Sprint 10
+### Artist verification required repeated submissions.
+
+**Resolution**
+
+Updated the verification workflow to support resubmission while preserving administrator feedback.
+
+---
+
+### Marketplace category filtering conflicted with Prisma enums.
+
+**Resolution**
+
+Mapped frontend display labels to backend enum values and synchronized homepage navigation with marketplace filters.
+
+## Outcome
+
+Palette now includes a fully functional administration module capable of managing users, products, verification requests, and platform activity.
+
+
+# Sprint 10 — Buyer Commerce Module
+
+**Status:** ✅ Completed
+
+## Objectives
+
+Develop a complete buyer purchasing workflow from cart creation to successful order completion.
+
+## Activities Completed
+
+- Connected shopping cart to backend.
+- Implemented order creation.
+- Developed checkout page.
+- Added shipping information capture.
+- Implemented order payment simulation.
+- Added pending order management.
+- Implemented inventory validation.
+- Added automatic stock reduction.
+- Developed marketplace cleanup service.
+- Removed unavailable products from public listings.
+- Cancelled conflicting pending orders automatically.
+
+## Features Completed
+
+- Shopping Cart
+- Order Creation
+- Checkout
+- Shipping Information
+- Pending Orders
+- Delete Pending Orders
+- Inventory Validation
+- Automatic Stock Updates
+- Marketplace Cleanup
+
+## Challenges Encountered
+
+### Product deletion conflicted with completed orders.
+
+**Resolution**
+
+Replaced permanent deletion with soft deletion and inventory-aware cleanup.
+
+---
+
+### Checkout transactions exceeded Prisma timeout.
+
+**Resolution**
+
+Refactored the checkout workflow into a single transactional process using shared transaction contexts.
+
+---
+
+### Preventing overselling while allowing multiple pending orders.
+
+**Resolution**
+
+Implemented inventory validation during payment rather than order creation, ensuring accurate stock management.
+
+## Outcome
+
+Palette now supports a complete commerce workflow with transactional inventory management and automatic marketplace synchronization.
+
+## Sprint 11
 
 Deployment
 
@@ -526,19 +630,7 @@ These principles will continue guiding future development.
 
 # Current Project Status
 
-| Area | Status |
-|-------|--------|
-| Project Planning | ✅ Complete |
-| Frontend Foundation | ✅ Complete |
-| Backend Foundation | ✅ Complete |
-| Database | ✅ Complete |
-| Authentication Backend | ✅ Complete |
-| Frontend Authentication | 🔄 In Progress |
-| Product Management | ⏳ Planned |
-| Orders | ⏳ Planned |
-| Reviews | ⏳ Planned |
-| Admin Dashboard | ⏳ Planned |
-| Deployment | ⏳ Planned |
+|
 
 ---
 

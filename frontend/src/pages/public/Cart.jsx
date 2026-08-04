@@ -4,8 +4,7 @@ import toast from "react-hot-toast";
 
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-
-import { checkout } from "../../services/orderService";
+import { createOrder } from "../../services/orderService";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -23,23 +22,30 @@ const Cart = () => {
   } = useCart();
 
   const handleCheckout = async () => {
-    if (!user) {
-      toast.error("Please login first.");
-      return;
-    }
 
-    const response = await checkout(user.id);
+  if (!user) {
 
-    if (response.success) {
-      toast.success("Order placed successfully!");
+    toast.error("Please login first.");
 
-      await emptyCart();
+    return;
 
-      navigate("/buyer/orders");
-    } else {
-      toast.error(response.message);
-    }
-  };
+  }
+
+  const response = await createOrder(user.id);
+
+  if (response.success) {
+
+    toast.success("Order created successfully.");
+
+    navigate("/buyer/orders");
+
+  } else {
+
+    toast.error(response.message);
+
+  }
+
+};
 
   if (loading) {
     return (

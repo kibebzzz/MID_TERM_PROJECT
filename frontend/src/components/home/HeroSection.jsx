@@ -47,9 +47,11 @@ const HeroSection = () => {
               </Button>
             </Link>
 
+            <Link to="/register">
             <Button variant="outline">
                Become a Creator
             </Button>
+            </Link>
 
           </div>
         </motion.div>

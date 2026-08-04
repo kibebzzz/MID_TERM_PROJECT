@@ -110,13 +110,18 @@ The primary objectives of Palette are:
 
 ---
 
-## Shopping Cart
+## Shopping Cart & Checkout
 
 - Add items
+- Update quantities
 - Remove items
-- Cart summary
-
-*(Checkout functionality is under development.)*
+- Create pending orders
+- Complete checkout
+- Shipping information
+- Inventory validation
+- Automatic stock updates
+- Order history
+- Pending order deletion
 
 ---
 
@@ -320,6 +325,10 @@ Returns the authenticated user's profile.
 - Artist settings
 - Artist verification
 - Product management
+- Admin dashboard
+- Product moderation
+- User management
+- Platform analytics
 
 ---
 
@@ -334,6 +343,10 @@ Returns the authenticated user's profile.
 - Artist Profile CRUD
 - Dashboard APIs
 - Cloudinary Upload API
+- Admin APIs
+- Verification moderation
+- User management APIs
+- Soft product deletion
 
 ---
 
@@ -364,9 +377,9 @@ Roles:
 
 ## 🚧 Currently In Development
 
-- Buyer Orders
-- Checkout
-- Admin Dashboard
+- Database-backed Wishlist
+- Artist Sales History
+- Payment Gateway Integration
 
 ---
 
@@ -402,28 +415,32 @@ Artist Module
 ✅ Complete
 
 ## Phase 6
-Buyer Module
-🔄 In Progress
+Buyer Commerce Module
+✅ Complete
 
 ## Phase 7
-Admin Module
-⏳ Planned
+Administration Module
+✅ Complete
 
 ## Phase 8
+Payment Gateway Integration
+🔄 In Progress
+
+## Phase 9
 Reviews & Ratings
 ⏳ Planned
 
-## Phase 9
+## Phase 10
 Notifications
 ⏳ Planned
 
-## Phase 10
+## Phase 11
 Deployment
 ⏳ Planned
 
 # Documentation
 
-Project documentation is maintained under the `docs/` directory and includes:
+Project documentation includes:
 
 - Software Requirements Specification (SRS)
 - Software Design Document (SDD)

@@ -678,3 +678,281 @@ The following modules remain under development:
 - Notifications
 - Admin Dashboard
 - Payment Integration
+
+
+---
+
+# [1.3.0] - August 2026
+
+## 🚀 Major Feature Update
+
+This release completes the Artist Management Module and introduces a comprehensive Administration Module for platform management.
+
+---
+
+## Added
+
+### Complete Administration Module
+
+Implemented a dedicated administrator workspace.
+
+Administrators can now:
+
+- Access a protected admin dashboard
+- View platform statistics
+- Review artist verification requests
+- Approve verification requests
+- Reject verification requests
+- Provide verification feedback
+- View all registered users
+- Promote buyers to artists
+- Demote artists to buyers
+- Suspend user accounts
+- Reactivate suspended accounts
+- View platform analytics
+- Manage marketplace products
+
+---
+
+### Product Moderation
+
+Implemented product moderation tools.
+
+Administrators can now:
+
+- View all uploaded products
+- Feature products
+- Remove products from the marketplace using soft deletion
+- Restore removed products
+
+Soft deletion preserves historical order information while hiding products from public listings.
+
+---
+
+### User Management
+
+Implemented a complete user management system.
+
+Added:
+
+- User search
+- Role filtering
+- Role promotion and demotion
+- Account suspension
+- Active/Suspended status tracking
+- Modern action menu interface
+
+Suspended users are prevented from authenticating.
+
+---
+
+### Platform Analytics
+
+Introduced a platform-wide analytics dashboard.
+
+Metrics include:
+
+- Total users
+- Total artists
+- Total buyers
+- Total products
+- Available products
+- Removed products
+- Featured products
+- Verified artists
+- Pending verification requests
+
+---
+
+### Marketplace Improvements
+
+Implemented several marketplace enhancements.
+
+Added:
+
+- Homepage category navigation
+- URL-based category filtering
+- Improved category synchronization
+- Dynamic category routing
+- Soft-delete aware marketplace queries
+
+---
+
+## Changed
+
+- Product deletion now performs a soft delete.
+- Marketplace hides unavailable products.
+- Artist profiles no longer display removed products.
+- Category filtering now matches Prisma enum values.
+- Homepage category cards navigate directly to filtered marketplace results.
+- Verification workflow now supports repeated submissions after rejection.
+
+---
+
+## Fixed
+
+- Artist profile rendering issues.
+- Marketplace category filtering.
+- Homepage category rendering.
+- Duplicate React key warnings.
+- Logout functionality for artist dashboard.
+- Verification resubmission workflow.
+- Product visibility inconsistencies.
+- Admin moderation edge cases.
+
+---
+
+## Security
+
+Enhanced administrative security.
+
+Added:
+
+- User suspension
+- Role management
+- Protected admin endpoints
+- Administrative moderation controls
+
+---
+
+## Known Limitations
+
+The following modules remain under development:
+
+- Checkout
+- Payment Integration
+- Buyer Order History
+- Artist Sales History
+- Notifications
+- Reviews
+- Ratings
+
+# [1.4.0] - August 2026
+
+## 🚀 Major Feature Update
+
+This release introduces the complete Buyer Commerce Module, including shopping cart integration, order management, checkout workflow, inventory validation, and automatic marketplace cleanup.
+
+---
+
+## Added
+
+### Buyer Commerce Module
+
+Implemented a complete buyer purchasing workflow.
+
+Buyers can now:
+
+- Add products to cart
+- Update cart quantities
+- Remove cart items
+- Create pending orders
+- View order history
+- Complete checkout
+- Submit shipping information
+- Delete pending orders before payment
+
+---
+
+### Checkout System
+
+Implemented a dedicated checkout experience.
+
+Added:
+
+- Shipping information form
+- Order summary
+- Payment simulation workflow
+- Order confirmation
+
+---
+
+### Order Management
+
+Implemented a complete order lifecycle.
+
+Order statuses now include:
+
+- Pending
+- Paid
+- Cancelled
+- Delivered
+
+Orders are created before payment, allowing buyers to review or cancel purchases prior to checkout.
+
+---
+
+### Inventory Management
+
+Implemented real-time inventory validation.
+
+Features include:
+
+- Stock validation during checkout
+- Automatic quantity reduction after payment
+- Automatic availability updates
+- Prevention of overselling
+- Live inventory synchronization
+
+---
+
+### Marketplace Cleanup
+
+Implemented automatic cleanup for unavailable products.
+
+When stock reaches zero:
+
+- Products become unavailable
+- Products disappear from the marketplace
+- Products disappear from artist profiles
+- Products are removed from buyer carts
+- Pending orders containing unavailable products are cancelled automatically
+
+---
+
+## Changed
+
+- Shopping cart now persists until successful payment.
+- Checkout now completes existing pending orders.
+- Product deletion continues using soft deletion.
+- Inventory updates are transaction-safe.
+- Commerce workflow now follows a production-style order lifecycle.
+
+---
+
+## Fixed
+
+- Checkout transaction timeout.
+- Product deletion conflicts with order history.
+- Inventory synchronization issues.
+- Marketplace consistency after stock depletion.
+- Cart cleanup after completed purchases.
+- Pending order edge cases.
+
+---
+
+## Security
+
+- Added transactional inventory validation.
+- Prevented duplicate pending orders.
+- Protected payment workflow against race conditions.
+
+---
+
+## Performance
+
+- Optimized checkout transaction flow.
+- Reduced unnecessary database operations.
+- Improved inventory update efficiency.
+
+---
+
+## Known Limitations
+
+The following modules remain under development:
+
+- Database-backed Wishlist
+- Reviews
+- Ratings
+- Notifications
+- Payment Gateway Integration

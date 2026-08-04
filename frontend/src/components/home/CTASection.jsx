@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const CTASection = () => {
   return (
     <section className="py-32">
@@ -12,9 +14,12 @@ const CTASection = () => {
           Join thousands of artists and collectors on Palette.
         </p>
 
-        <button className="mt-10 bg-white text-cyan-500 px-10 py-4 rounded-xl font-semibold hover:scale-105 transition">
-          Get Started
-        </button>
+          <Link to="/register">
+            <button className="mt-10 bg-white text-cyan-500 px-10 py-4 rounded-xl font-semibold hover:scale-105 transition">
+              Get Started
+            </button>
+          </Link>
+         
 
       </div>
 

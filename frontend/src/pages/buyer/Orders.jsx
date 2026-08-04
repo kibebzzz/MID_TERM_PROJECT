@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { getOrders } from "../../services/orderService";
-
+import { 
+  getOrders,
+  deleteOrder
+ } from "../../services/orderService";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 const Orders = () => {
   const { user } = useAuth();
+
+  const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
 
@@ -63,15 +69,78 @@ const Orders = () => {
 
                 <div className="text-right">
 
-                  <p className="font-semibold">
-                    {order.status}
-                  </p>
+  <span
+    className={`px-3 py-1 rounded-full font-semibold ${
+      order.status === "PENDING"
+        ? "bg-yellow-100 text-yellow-700"
+        : order.status === "PAID"
+        ? "bg-green-100 text-green-700"
+        : order.status === "DELIVERED"
+        ? "bg-cyan-100 text-cyan-700"
+        : "bg-red-100 text-red-700"
+    }`}
+  >
+    {order.status}
+  </span>
 
-                  <h3 className="text-2xl font-bold mt-2">
-                    KSh {order.totalAmount.toLocaleString()}
-                  </h3>
+  <h3 className="text-2xl font-bold mt-3">
+    KSh {order.totalAmount.toLocaleString()}
+  </h3>
 
-                </div>
+  {order.status === "PENDING" && (
+
+  <div className="mt-5 flex flex-col gap-3">
+
+    <button
+      onClick={() =>
+        navigate(`/buyer/checkout/${order.id}`)
+      }
+      className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl transition"
+    >
+      Complete Payment
+    </button>
+
+    <button
+      onClick={async () => {
+
+        const confirmed = window.confirm(
+          "Are you sure you want to delete this pending order?"
+        );
+
+        if (!confirmed) return;
+
+        const response = await deleteOrder(
+          order.id,
+          user.id
+        );
+
+        if (response.success) {
+
+          toast.success("Order deleted.");
+
+          setOrders((prev) =>
+            prev.filter(
+              (o) => o.id !== order.id
+            )
+          );
+
+        } else {
+
+          toast.error(response.message);
+
+        }
+
+      }}
+      className="border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-6 py-3 rounded-xl transition"
+    >
+      Delete Order
+    </button>
+
+  </div>
+
+)}
+
+</div>
 
               </div>
 

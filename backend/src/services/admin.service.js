@@ -188,6 +188,7 @@ export const getAnalytics = async () => {
     where: {
       isAvailable: false,
     },
+
   });
 
   const verifiedArtists = await prisma.artistProfile.count({

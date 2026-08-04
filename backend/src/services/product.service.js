@@ -1,4 +1,6 @@
 import prisma from "../config/prisma.js";
+import { cleanupUnavailableProduct }
+from "./productCleanup.service.js";
 
 export const createProduct = async (data) => {
   return await prisma.product.create({
@@ -49,23 +51,33 @@ export const getProductById = async (id) => {
 export const deleteProduct = async (id) => {
 
   const product = await prisma.product.findUnique({
+
     where: {
       id,
     },
+
   });
 
   if (!product) {
     throw new Error("Product not found.");
   }
 
-  return await prisma.product.update({
-    where: {
-      id,
-    },
-    data: {
-      isAvailable: false,
-    },
-  });
+  const updatedProduct =
+    await prisma.product.update({
+
+      where: {
+        id,
+      },
+
+      data: {
+        isAvailable: false,
+      },
+
+    });
+
+  await cleanupUnavailableProduct(id);
+
+  return updatedProduct;
 
 };
 

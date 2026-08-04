@@ -1,6 +1,8 @@
 import prisma from "../config/prisma.js";
+import { cleanupUnavailableProduct }
+from "./productCleanup.service.js";
 
-export const checkout = async (userId) => {
+export const createOrder = async (userId) => {
 
   const cart = await prisma.cart.findUnique({
     where: {
@@ -18,6 +20,53 @@ export const checkout = async (userId) => {
   if (!cart || cart.items.length === 0) {
     throw new Error("Cart is empty.");
   }
+
+const existingPendingOrder =
+  await prisma.order.findFirst({
+
+    where: {
+
+      userId,
+
+      status: "PENDING",
+
+    },
+
+  });
+
+if (existingPendingOrder) {
+
+  throw new Error(
+    "You already have a pending order. Please complete or cancel it first."
+  );
+
+}
+
+
+for (const item of cart.items) {
+
+  if (!item.product.isAvailable) {
+
+    throw new Error(
+      `${item.product.title} is no longer available.`
+    );
+
+  }
+
+  if (
+
+    item.product.quantity <
+    item.quantity
+
+  ) {
+
+    throw new Error(
+      `${item.product.title} is out of stock.`
+    );
+
+  }
+
+}
 
   const totalAmount = cart.items.reduce(
     (sum, item) =>
@@ -44,12 +93,6 @@ export const checkout = async (userId) => {
     },
   });
 
-  await prisma.cartItem.deleteMany({
-    where: {
-      cartId: cart.id,
-    },
-  });
-
   return order;
 };
 
@@ -69,4 +112,265 @@ export const getUserOrders = async (userId) => {
       createdAt: "desc",
     },
   });
+};
+export const completePayment = async (
+  orderId,
+  shipping
+) => {
+
+  return await prisma.$transaction(
+
+    async (tx) => {
+
+      const order =
+        await tx.order.findUnique({
+
+          where: {
+            id: orderId,
+          },
+
+          include: {
+
+            items: {
+
+              include: {
+                product: true,
+              },
+
+            },
+
+          },
+
+        });
+
+      if (!order) {
+        throw new Error("Order not found.");
+      }
+
+      if (order.status !== "PENDING") {
+
+        throw new Error(
+          "This order has already been processed."
+        );
+
+      }
+
+      const soldOutProducts = [];
+
+      // Validate inventory
+
+      for (const item of order.items) {
+
+        if (!item.product.isAvailable) {
+
+          throw new Error(
+            `${item.product.title} is no longer available.`
+          );
+
+        }
+
+        if (
+          item.product.quantity <
+          item.quantity
+        ) {
+
+          throw new Error(
+            `${item.product.title} is out of stock.`
+          );
+
+        }
+
+      }
+
+      // Reduce inventory
+
+      for (const item of order.items) {
+
+        const remaining =
+          item.product.quantity -
+          item.quantity;
+
+        await tx.product.update({
+
+          where: {
+            id: item.productId,
+          },
+
+          data: {
+
+            quantity: remaining,
+
+            isAvailable:
+              remaining > 0,
+
+          },
+
+        });
+
+        if (remaining === 0) {
+
+          soldOutProducts.push(
+            item.productId
+          );
+
+        }
+
+      }
+
+      // Cleanup sold-out products
+
+      for (const productId of soldOutProducts) {
+
+        await cleanupUnavailableProduct(
+          tx,
+          productId
+        );
+
+      }
+
+      // Clear buyer cart
+
+      await tx.cartItem.deleteMany({
+
+        where: {
+
+          cart: {
+
+            userId:
+              order.userId,
+
+          },
+
+        },
+
+      });
+
+      // Update order
+
+      return await tx.order.update({
+
+        where: {
+          id: orderId,
+        },
+
+        data: {
+
+          status: "PAID",
+
+          shippingName:
+            shipping.shippingName,
+
+          shippingEmail:
+            shipping.shippingEmail,
+
+          shippingPhone:
+            shipping.shippingPhone,
+
+          shippingAddress:
+            shipping.shippingAddress,
+
+          shippingCity:
+            shipping.shippingCity,
+
+          shippingCountry:
+            shipping.shippingCountry,
+
+        },
+
+        include: {
+
+          items: {
+
+            include: {
+              product: true,
+            },
+
+          },
+
+        },
+
+      });
+
+    },
+
+    {
+
+      timeout: 15000,
+
+    }
+
+  );
+
+};
+
+
+
+export const getOrderById = async (orderId) => {
+
+  return await prisma.order.findUnique({
+
+    where: {
+      id: orderId,
+    },
+
+    include: {
+
+      user: true,
+
+      items: {
+
+        include: {
+          product: true,
+        },
+
+      },
+
+    },
+
+  });
+
+};
+
+export const deletePendingOrder = async (
+  orderId,
+  userId
+) => {
+
+  const order =
+    await prisma.order.findUnique({
+
+      where: {
+        id: orderId,
+      },
+
+    });
+
+  if (!order) {
+
+    throw new Error("Order not found.");
+
+  }
+
+  if (order.userId !== userId) {
+
+    throw new Error("Unauthorized.");
+
+  }
+
+  if (order.status !== "PENDING") {
+
+    throw new Error(
+      "Only pending orders can be deleted."
+    );
+
+  }
+
+  await prisma.order.delete({
+
+    where: {
+      id: orderId,
+    },
+
+  });
+
 };

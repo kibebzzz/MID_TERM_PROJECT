@@ -159,6 +159,13 @@ model Order {
 
   totalAmount Float
 
+  shippingName    String?
+shippingEmail   String?
+shippingPhone   String?
+shippingAddress String?
+shippingCity    String?
+shippingCountry String?
+
   items       OrderItem[]
 
   createdAt   DateTime      @default(now())
