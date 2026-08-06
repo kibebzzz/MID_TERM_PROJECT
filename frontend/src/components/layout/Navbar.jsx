@@ -16,7 +16,10 @@ import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
-  const { wishlist } = useWishlist();
+  const {
+  wishlist,
+  count,
+} = useWishlist();
   const { itemCount } = useCart();
 
 const { user, logout, isAuthenticated } = useAuth();
@@ -113,9 +116,9 @@ const dashboardPath = isBuyer
           className="text-gray-700 hover:text-red-500 transition"
         />
 
-        {wishlist.length > 0 && (
+        {count > 0 && (
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-            {wishlist.length}
+            {count}
           </span>
         )}
 

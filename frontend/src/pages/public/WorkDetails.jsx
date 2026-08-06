@@ -9,6 +9,12 @@ import { getProductById } from "../../services/productService";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
 import { useAuth } from "../../context/AuthContext";
+import { 
+  getProductReviews,
+  updateReview,
+  deleteReview,
+ } from "../../services/reviewService";
+
 
 const WorkDetails = () => {
   const { id } = useParams();
@@ -22,6 +28,13 @@ const WorkDetails = () => {
 
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
+const [reviews, setReviews] = useState([]);
+
+const [editingReview, setEditingReview] = useState(null);
+
+const [editedRating, setEditedRating] = useState(5);
+
+const [editedComment, setEditedComment] = useState("");
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -31,6 +44,15 @@ const WorkDetails = () => {
 
       if (response.success) {
         setProduct(response.data);
+
+        const reviewResponse =
+  await getProductReviews(id);
+
+if (reviewResponse.success) {
+
+  setReviews(reviewResponse.data);
+
+}
       } else {
         toast.error(response.message);
       }
@@ -65,6 +87,19 @@ const WorkDetails = () => {
     );
   }
 
+  const averageRating =
+  reviews.length > 0
+
+    ? (
+        reviews.reduce(
+          (sum, review) =>
+            sum + review.rating,
+          0
+        ) / reviews.length
+      ).toFixed(1)
+
+    : "0.0";
+
   return (
     <PageWrapper>
 
@@ -94,6 +129,30 @@ const WorkDetails = () => {
             <p className="text-xl mt-4 text-gray-600">
               by {product.artist.fullName}
             </p>
+
+            <div className="flex items-center gap-3 mt-5">
+
+  <span className="text-yellow-500 text-xl">
+
+    {"⭐".repeat(
+      Math.round(averageRating)
+    )}
+
+  </span>
+
+  <span className="font-semibold">
+
+    {averageRating}
+
+  </span>
+
+  <span className="text-gray-500">
+
+    ({reviews.length} Reviews)
+
+  </span>
+
+</div>
 
             <div className="flex gap-6 mt-8">
 
@@ -138,6 +197,265 @@ const WorkDetails = () => {
           </div>
 
         </div>
+
+        <div className="mt-24">
+
+  <h2 className="text-4xl font-black mb-10">
+
+    Customer Reviews
+
+  </h2>
+
+  {reviews.length === 0 ? (
+
+    <p className="text-gray-500">
+
+      No reviews yet.
+
+    </p>
+
+  ) : (
+
+    <div className="space-y-8">
+
+      {reviews.map((review) => (
+
+        <div
+          key={review.id}
+          className="bg-white rounded-3xl shadow p-8"
+        >
+
+          <div className="flex justify-between">
+
+            <div>
+
+              <h3 className="font-bold">
+
+                {review.buyer.fullName}
+
+              </h3>
+
+              <p className="text-yellow-500">
+
+                {"⭐".repeat(review.rating)}
+
+              </p>
+
+              {review.verifiedPurchase && (
+
+  <span className="text-green-600 text-sm font-semibold">
+
+    ✔ Verified Purchase
+
+  </span>
+
+)}
+
+            </div>
+
+            <span className="text-gray-400">
+
+              {new Date(
+                review.createdAt
+              ).toLocaleDateString()}
+
+            </span>
+
+          </div>
+
+          {editingReview === review.id ? (
+
+  <>
+
+    <select
+      value={editedRating}
+      onChange={(e) =>
+        setEditedRating(Number(e.target.value))
+      }
+      className="border rounded-lg p-2 mt-4"
+    >
+
+      {[5,4,3,2,1].map((rating) => (
+
+        <option
+          key={rating}
+          value={rating}
+        >
+
+          {rating} Star{rating > 1 ? "s" : ""}
+
+        </option>
+
+      ))}
+
+    </select>
+
+    <textarea
+      value={editedComment}
+      onChange={(e) =>
+        setEditedComment(e.target.value)
+      }
+      className="w-full border rounded-xl p-3 mt-4"
+    />
+
+  </>
+
+) : (
+
+  <p className="mt-5 text-gray-600">
+
+    {review.comment}
+
+  </p>
+
+)}
+
+{user?.id === review.buyer.id && (
+
+<div className="flex gap-3 mt-5">
+
+  {editingReview === review.id ? (
+
+    <>
+
+      <button
+
+        onClick={async () => {
+
+          const response =
+            await updateReview(
+
+              review.id,
+
+              {
+
+                buyerId: user.id,
+
+                rating: editedRating,
+
+                comment: editedComment,
+
+              }
+
+            );
+
+          if (response.success) {
+
+            toast.success("Review updated.");
+
+            setEditingReview(null);
+
+            const refreshed =
+              await getProductReviews(id);
+
+            setReviews(refreshed.data);
+
+          }
+
+        }}
+
+        className="bg-cyan-500 text-white px-4 py-2 rounded-lg"
+
+      >
+
+        Save
+
+      </button>
+
+      <button
+
+        onClick={() =>
+          setEditingReview(null)
+        }
+
+        className="border px-4 py-2 rounded-lg"
+
+      >
+
+        Cancel
+
+      </button>
+
+    </>
+
+  ) : (
+
+    <>
+
+      <button
+
+        onClick={() => {
+
+          setEditingReview(review.id);
+
+          setEditedRating(review.rating);
+
+          setEditedComment(review.comment);
+
+        }}
+
+        className="text-cyan-500"
+
+      >
+
+        Edit
+
+      </button>
+
+      <button
+
+        onClick={async () => {
+
+          if (!window.confirm("Delete this review?"))
+            return;
+
+          const response =
+            await deleteReview(
+
+              review.id,
+
+              user.id
+
+            );
+
+          if (response.success) {
+
+            toast.success("Review deleted.");
+
+            const refreshed =
+              await getProductReviews(id);
+
+            setReviews(refreshed.data);
+
+          }
+
+        }}
+
+        className="text-red-500"
+
+      >
+
+        Delete
+
+      </button>
+
+    </>
+
+  )}
+
+</div>
+
+)}
+
+        </div>
+
+      ))}
+
+    </div>
+
+  )}
+
+</div>
 
       </section>
 

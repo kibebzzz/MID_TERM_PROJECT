@@ -15,6 +15,16 @@ export const cleanupUnavailableProduct = async (
 
   });
 
+  await tx.wishlistItem.deleteMany({
+
+  where: {
+
+    productId,
+
+  },
+
+});
+
   // Cancel pending orders containing this product
 
   const pendingOrders =

@@ -97,22 +97,64 @@ for (const item of cart.items) {
 };
 
 export const getUserOrders = async (userId) => {
-  return await prisma.order.findMany({
+
+  const orders = await prisma.order.findMany({
+
     where: {
       userId,
     },
+
     include: {
+
       items: {
+
         include: {
-          product: true,
+
+          product: {
+
+            include: {
+
+              reviews: {
+
+                where: {
+                  buyerId: userId,
+                },
+
+              },
+
+            },
+
+          },
+
         },
+
       },
+
     },
+
     orderBy: {
       createdAt: "desc",
     },
+
   });
+
+  return orders.map((order) => ({
+
+    ...order,
+
+    items: order.items.map((item) => ({
+
+      ...item,
+
+      review: item.product.reviews.length > 0,
+
+    })),
+
+  }));
+
 };
+
+
 export const completePayment = async (
   orderId,
   shipping
@@ -255,39 +297,41 @@ export const completePayment = async (
 
         data: {
 
-          status: "PAID",
+  shippingName: shipping.shippingName,
 
-          shippingName:
-            shipping.shippingName,
+  shippingEmail: shipping.shippingEmail,
 
-          shippingEmail:
-            shipping.shippingEmail,
+  shippingPhone: shipping.shippingPhone,
 
-          shippingPhone:
-            shipping.shippingPhone,
+  shippingAddress: shipping.shippingAddress,
 
-          shippingAddress:
-            shipping.shippingAddress,
+  shippingCity: shipping.shippingCity,
 
-          shippingCity:
-            shipping.shippingCity,
+  shippingCountry: shipping.shippingCountry,
 
-          shippingCountry:
-            shipping.shippingCountry,
+  paymentMethod: shipping.paymentMethod,
 
-        },
+  paymentReference: shipping.paymentReference,
 
-        include: {
+  paidAt: new Date(),
 
-          items: {
+  status: "PAID",
 
-            include: {
-              product: true,
-            },
+},
 
-          },
+      include: {
 
-        },
+  items: {
+
+    include: {
+
+      product: true,
+
+    },
+
+  },
+
+},
 
       });
 

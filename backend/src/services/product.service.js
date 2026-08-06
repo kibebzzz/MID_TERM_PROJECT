@@ -15,15 +15,33 @@ export const getProducts = async () => {
     isAvailable: true,
   },
 
-  include: {
-    artist: {
-      select: {
-        id: true,
-        fullName: true,
-        profileImage: true,
-      },
+ include: {
+
+  artist: {
+
+    select: {
+
+      id: true,
+
+      fullName: true,
+
+      profileImage: true,
+
     },
+
   },
+
+  reviews: {
+
+    select: {
+
+      rating: true,
+
+    },
+
+  },
+
+},
 
   orderBy: {
     createdAt: "desc",
@@ -39,45 +57,82 @@ export const getProductById = async (id) => {
       isAvailable: true,
     },
     include: {
-      artist: {
-        include: {
-          artistProfile: true,
-        },
-      },
+
+  artist: {
+
+    include: {
+
+      artistProfile: true,
+
     },
+
+  },
+
+  reviews: {
+
+    include: {
+
+      buyer: {
+
+        select: {
+
+          fullName: true,
+
+          profileImage: true,
+
+        },
+
+      },
+
+    },
+
+  },
+
+},
   });
 };
 
 export const deleteProduct = async (id) => {
 
-  const product = await prisma.product.findUnique({
+  return await prisma.$transaction(async (tx) => {
 
-    where: {
-      id,
-    },
-
-  });
-
-  if (!product) {
-    throw new Error("Product not found.");
-  }
-
-  const updatedProduct =
-    await prisma.product.update({
+    const product = await tx.product.findUnique({
 
       where: {
         id,
       },
 
-      data: {
-        isAvailable: false,
-      },
-
     });
 
-  await cleanupUnavailableProduct(id);
+    if (!product) {
 
-  return updatedProduct;
+      throw new Error("Product not found.");
+
+    }
+
+    const updatedProduct =
+      await tx.product.update({
+
+        where: {
+          id,
+        },
+
+        data: {
+
+          isAvailable: false,
+
+        },
+
+      });
+
+    await cleanupUnavailableProduct(
+      tx,
+      id
+    );
+
+    return updatedProduct;
+
+  });
 
 };
 

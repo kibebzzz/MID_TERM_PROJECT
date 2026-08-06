@@ -6,6 +6,9 @@ import { getOrder, completePayment } from "../../services/orderService";
 
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
+import PaymentModal from "../../components/payment/PaymentModal";
+
+
 
 const Checkout = () => {
 
@@ -27,6 +30,41 @@ const Checkout = () => {
     shippingCountry: "Kenya",
 
   });
+
+  const [paymentMethod, setPaymentMethod] =
+  useState("MPESA");
+
+  const [showPaymentModal, setShowPaymentModal] =
+  useState(false);
+
+const [processing, setProcessing] =
+  useState(false);
+
+  const [stkPush, setStkPush] =
+  useState(false);
+
+  const [success, setSuccess] =
+useState(false);
+
+const [paymentReference, setPaymentReference] =
+useState("");
+
+const [paymentData, setPaymentData] =
+  useState({
+
+    phone: "",
+
+    pin: "",
+
+    cardNumber: "",
+
+    expiry: "",
+
+    cvv: "",
+
+    cardName: "",
+
+});
 
   useEffect(() => {
 
@@ -64,34 +102,127 @@ const Checkout = () => {
 
   };
 
-  const handlePayment = async () => {
+  const generateReference = () => {
+
+  const chars =
+    "ABCDEFGHJKLMNPQRSTUVWXYZ123456789";
+
+  let code = "";
+
+  for (let i = 0; i < 8; i++) {
+
+    code += chars[
+      Math.floor(
+        Math.random() *
+        chars.length
+      )
+    ];
+
+  }
+
+  return paymentMethod === "MPESA"
+
+    ? `MPESA-${code}`
+
+    : `CARD-${code}`;
+
+};
+
+const handlePayment = async () => {
+
+  if (
+    !formData.shippingName ||
+    !formData.shippingEmail ||
+    !formData.shippingPhone ||
+    !formData.shippingAddress ||
+    !formData.shippingCity
+  ) {
+
+    toast.error(
+      "Please complete all shipping information."
+    );
+
+    return;
+
+  }
+
+  if (paymentMethod === "MPESA") {
 
     if (
-      !formData.shippingName ||
-      !formData.shippingEmail ||
-      !formData.shippingPhone ||
-      !formData.shippingAddress ||
-      !formData.shippingCity
+      !paymentData.phone ||
+      !paymentData.pin
     ) {
 
-      toast.error("Please complete all shipping information.");
+      toast.error(
+        "Please enter your M-Pesa details."
+      );
 
       return;
 
     }
 
-    setLoading(true);
+  }
 
-    const response = await completePayment(
-      orderId,
-      formData
-    );
+  if (paymentMethod === "CARD") {
+
+    if (
+      !paymentData.cardNumber ||
+      !paymentData.expiry ||
+      !paymentData.cvv ||
+      !paymentData.cardName
+    ) {
+
+      toast.error(
+        "Please complete your card details."
+      );
+
+      return;
+
+    }
+
+  }
+
+  setStkPush(true);
+
+setTimeout(() => {
+
+  setStkPush(false);
+
+  setProcessing(true);
+
+  setTimeout(async () => {
+
+    const reference = generateReference();
+
+setPaymentReference(reference);
+
+const response =
+await completePayment(
+
+    orderId,
+
+    {
+
+        ...formData,
+
+        paymentMethod,
+
+        paymentReference: reference,
+
+    }
+
+);
+
+    setProcessing(false);
 
     if (response.success) {
 
-      toast.success("Payment completed successfully!");
+      const reference =
+    generateReference();
 
-      navigate("/buyer/orders");
+setPaymentReference(reference);
+
+setSuccess(true);
 
     } else {
 
@@ -99,9 +230,11 @@ const Checkout = () => {
 
     }
 
-    setLoading(false);
+  }, 2500);
 
-  };
+}, 2000);
+
+};
 
   if (!order) {
 
@@ -185,6 +318,78 @@ const Checkout = () => {
             onChange={handleChange}
           />
 
+          <div className="mt-8">
+
+  <h2 className="text-2xl font-bold mb-5">
+    Payment Method
+  </h2>
+
+  <div className="space-y-4">
+
+    <label
+      className={`border rounded-2xl p-5 flex items-center justify-between cursor-pointer transition ${
+        paymentMethod === "MPESA"
+          ? "border-cyan-500 bg-cyan-50"
+          : "border-gray-200"
+      }`}
+    >
+
+      <div>
+
+        <h3 className="font-bold text-lg">
+          📱 M-Pesa
+        </h3>
+
+        <p className="text-gray-500 text-sm">
+          Recommended for Kenyan buyers
+        </p>
+
+      </div>
+
+      <input
+        type="radio"
+        checked={paymentMethod === "MPESA"}
+        onChange={() =>
+          setPaymentMethod("MPESA")
+        }
+      />
+
+    </label>
+
+    <label
+      className={`border rounded-2xl p-5 flex items-center justify-between cursor-pointer transition ${
+        paymentMethod === "CARD"
+          ? "border-cyan-500 bg-cyan-50"
+          : "border-gray-200"
+      }`}
+    >
+
+      <div>
+
+        <h3 className="font-bold text-lg">
+          💳 Credit / Debit Card
+        </h3>
+
+        <p className="text-gray-500 text-sm">
+          Visa • Mastercard
+        </p>
+
+      </div>
+
+      <input
+        type="radio"
+        checked={paymentMethod === "CARD"}
+        onChange={() =>
+          setPaymentMethod("CARD")
+        }
+      />
+
+    </label>
+
+  </div>
+
+</div>
+
         </div>
 
         {/* Summary */}
@@ -247,20 +452,66 @@ const Checkout = () => {
           </div>
 
           <Button
-            className="w-full mt-10"
-            onClick={handlePayment}
-            disabled={loading}
-          >
 
-            {loading
-              ? "Processing..."
-              : "Complete Payment"}
+className="w-full mt-10"
 
-          </Button>
+onClick={() =>
+  setShowPaymentModal(true)
+}
+
+>
+
+Complete Payment
+
+</Button>
 
         </div>
 
       </div>
+
+      <PaymentModal
+
+open={showPaymentModal}
+
+paymentMethod={paymentMethod}
+
+paymentData={paymentData}
+
+setPaymentData={setPaymentData}
+
+processing={processing}
+
+stkPush={stkPush}
+
+success={success}
+
+paymentReference={paymentReference}
+
+order={order}
+
+onClose={() =>
+setShowPaymentModal(false)
+}
+
+onConfirm={handlePayment}
+
+onOrders={() => {
+
+setShowPaymentModal(false);
+
+navigate("/buyer/orders");
+
+}}
+
+onMarketplace={() => {
+
+setShowPaymentModal(false);
+
+navigate("/marketplace");
+
+}}
+
+/>
 
     </section>
 

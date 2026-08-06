@@ -12,6 +12,18 @@ const ProductCard = ({ product }) => {
 
 const isBuyer = user?.role === "BUYER";
 const canPurchase = !isAuthenticated || isBuyer;
+const averageRating =
+  product.reviews?.length
+
+    ? (
+        product.reviews.reduce(
+          (sum, review) =>
+            sum + review.rating,
+          0
+        ) / product.reviews.length
+      ).toFixed(1)
+
+    : null;
 
   return (
     <div className="group rounded-3xl overflow-hidden bg-white shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
@@ -73,6 +85,32 @@ const canPurchase = !isAuthenticated || isBuyer;
         <p className="text-gray-500 mt-3">
   by {product.artist?.fullName || "Unknown Artist"}
 </p>
+
+{averageRating && (
+
+<div className="flex items-center gap-2 mt-3">
+
+  <span className="text-yellow-500">
+
+    ⭐
+
+  </span>
+
+  <span className="font-semibold">
+
+    {averageRating}
+
+  </span>
+
+  <span className="text-gray-500">
+
+    ({product.reviews.length})
+
+  </span>
+
+</div>
+
+)}
 
         <div className="flex justify-between items-center mt-6">
 

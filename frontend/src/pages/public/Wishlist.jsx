@@ -31,11 +31,11 @@ Save creative works you love.
 
 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
 
-{wishlist.map((product)=>(
+{wishlist.map((item) => (
 
 <ProductCard
-key={product.id}
-product={product}
+    key={item.product.id}
+    product={item.product}
 />
 
 ))}

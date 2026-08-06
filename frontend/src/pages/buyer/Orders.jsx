@@ -6,12 +6,17 @@ import {
  } from "../../services/orderService";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import ReviewModal from "../../components/reviews/ReviewModal";
+
 const Orders = () => {
   const { user } = useAuth();
 
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
+
+  const [selectedProduct, setSelectedProduct] =
+  useState(null);
 
   useEffect(() => {
     const loadOrders = async () => {
@@ -169,6 +174,25 @@ const Orders = () => {
                       KSh {item.price.toLocaleString()}
                     </p>
 
+                    {order.status === "PAID" &&
+ !item.review && (
+
+<button
+
+  onClick={() =>
+    setSelectedProduct(item.product)
+  }
+
+  className="text-cyan-500 text-sm mt-2"
+
+>
+
+Leave Review
+
+</button>
+
+)}
+
                   </div>
 
                 ))}
@@ -182,6 +206,24 @@ const Orders = () => {
         )}
 
       </div>
+
+      {selectedProduct && (
+
+<ReviewModal
+
+  product={selectedProduct}
+
+  order={null}
+
+  user={user}
+
+  onClose={() =>
+    setSelectedProduct(null)
+  }
+
+/>
+
+)}
 
     </section>
   );
