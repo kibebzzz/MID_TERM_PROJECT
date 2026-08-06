@@ -1,6 +1,8 @@
 import prisma from "../config/prisma.js";
 import { cleanupUnavailableProduct }
 from "./productCleanup.service.js";
+import { createNotification }
+from "./notification.service.js";
 
 export const createOrder = async (userId) => {
 
@@ -259,6 +261,36 @@ export const completePayment = async (
 
       }
 
+      const notifiedArtists = new Set();
+
+for (const item of order.items) {
+
+  if (
+    notifiedArtists.has(
+      item.product.artistId
+    )
+  ) continue;
+
+  await createNotification({
+
+    userId: item.product.artistId,
+
+    title: "New Order Received",
+
+    message: `You have received a new order containing "${item.product.title}".`,
+
+    type: "ORDER",
+
+    link: "/artist/orders",
+
+  });
+
+  notifiedArtists.add(
+    item.product.artistId
+  );
+
+}
+
       // Cleanup sold-out products
 
       for (const productId of soldOutProducts) {
@@ -325,7 +357,23 @@ export const completePayment = async (
 
     include: {
 
-      product: true,
+     product: {
+
+  select: {
+
+    id: true,
+
+    title: true,
+
+    artistId: true,
+
+    quantity: true,
+
+    isAvailable: true,
+
+  },
+
+},
 
     },
 

@@ -44,9 +44,13 @@ model User {
   cart     Cart?
   wishlist Wishlist?
 
-  orders  Order[]
-  reviews Review[] @relation("BuyerReviews")
+  orders         Order[]
+  reviews        Review[]        @relation("BuyerReviews")
+  supportTickets SupportTicket[]
+  notifications Notification[]
 }
+
+
 
 model ArtistProfile {
   id String @id @default(cuid())
@@ -239,4 +243,63 @@ model Review {
   updatedAt DateTime @updatedAt
 
   @@unique([buyerId, productId])
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+
+enum NotificationType {
+  SUPPORT
+  ORDER
+  REVIEW
+  VERIFICATION
+  SYSTEM
+}
+
+
+model SupportTicket {
+  id String @id @default(cuid())
+
+  subject String
+
+  category String
+
+  message String
+
+  status TicketStatus @default(OPEN)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  userId String?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+model Notification {
+
+  id        String @id @default(cuid())
+
+  title     String
+
+  message   String
+
+  type      NotificationType
+
+  link      String?
+
+  isRead    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 }

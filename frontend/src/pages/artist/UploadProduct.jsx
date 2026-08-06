@@ -16,7 +16,6 @@ const UploadProduct = () => {
   price: "",
   category: "PAINTING",
   quantity: 1,
-  featured: false,
   imageUrls: "",
 });
 
@@ -78,7 +77,6 @@ if (selectedImage) {
   price: Number(formData.price),
   category: formData.category,
   quantity: Number(formData.quantity),
-  featured: formData.featured,
   imageUrls: imageUrl ? [imageUrl] : [],
   artistId: user.id,
 });
@@ -93,7 +91,6 @@ if (selectedImage) {
           price: "",
           category: "PAINTING",
           quantity: 1,
-          featured: false,
           imageUrls: "",
         });
 
@@ -193,16 +190,6 @@ if (selectedImage) {
             <option value="FASHION">Fashion</option>
             <option value="OTHER">Other</option>
           </select>
-
-          <label className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              name="featured"
-              checked={formData.featured}
-              onChange={handleChange}
-            />
-            Featured Product
-          </label>
 
           <Button
             className="w-full"

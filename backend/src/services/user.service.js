@@ -1,4 +1,7 @@
 import prisma from "../config/prisma.js";
+import { createNotification } from "./notification.service.js";
+
+
 
 export const getLoggedInUser = async (id) => {
   return prisma.user.findUnique({
@@ -160,15 +163,46 @@ export const reviewVerification = async (
   verificationStatus,
   verificationNotes
 ) => {
-  return await prisma.artistProfile.update({
+
+  const artist = await prisma.artistProfile.update({
+
     where: {
       userId,
     },
 
     data: {
+
       verificationStatus,
+
       verificationNotes,
-      verified: verificationStatus === "VERIFIED",
+
+      verified:
+        verificationStatus === "VERIFIED",
+
     },
+
   });
+
+  await createNotification({
+
+    userId,
+
+    title:
+      verificationStatus === "VERIFIED"
+        ? "Verification Approved"
+        : "Verification Rejected",
+
+    message:
+      verificationStatus === "VERIFIED"
+        ? "Congratulations! Your artist account has been verified."
+        : "Your verification request was not approved. Please review the feedback and submit again.",
+
+    type: "VERIFICATION",
+
+    link: "/artist/profile",
+
+  });
+
+  return artist;
+
 };

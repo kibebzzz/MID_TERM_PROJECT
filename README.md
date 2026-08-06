@@ -377,19 +377,18 @@ Roles:
 
 ## 🚧 Currently In Development
 
-- Database-backed Wishlist
+- Help Center
+- Notifications
 - Artist Sales History
 - Payment Gateway Integration
 
----
+## ✅ Recently Completed
 
-## 📋 Planned
-
-- Reviews
-- Ratings
-- Notifications
-- Payment Integration
-- Deployment
+- Database-backed Wishlist
+- Product Reviews
+- Product Ratings
+- Payment Simulation
+- Digital Receipt
 
 
 # Development Roadmap

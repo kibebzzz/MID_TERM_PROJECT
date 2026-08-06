@@ -1,4 +1,5 @@
 import prisma from "../config/prisma.js";
+import { createNotification } from "./notification.service.js";
 
 export const createReview = async (data) => {
 
@@ -49,7 +50,27 @@ export const createReview = async (data) => {
 
   }
 
-  return await prisma.review.create({
+  const buyer = await prisma.user.findUnique({
+
+    where: {
+
+      id: data.buyerId,
+
+    },
+
+  });
+
+  const product = await prisma.product.findUnique({
+
+    where: {
+
+      id: data.productId,
+
+    },
+
+  });
+
+  const review = await prisma.review.create({
 
     data: {
 
@@ -84,6 +105,22 @@ export const createReview = async (data) => {
     },
 
   });
+
+  await createNotification({
+
+    userId: product.artistId,
+
+    title: "New Product Review",
+
+    message: `${buyer.fullName} reviewed "${product.title}".`,
+
+    type: "REVIEW",
+
+    link: "/artist/products",
+
+  });
+
+  return review;
 
 };
 

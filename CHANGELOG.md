@@ -956,3 +956,51 @@ The following modules remain under development:
 - Ratings
 - Notifications
 - Payment Gateway Integration
+
+# [1.5.0] - August 2026
+
+## 🚀 Major Feature Update
+
+This release introduces a complete review system, persistent wishlists, payment simulation, and digital purchase receipts.
+
+## Added
+
+### Wishlist
+
+- Database-backed wishlist
+- User-specific wishlists
+- Wishlist persistence
+- Automatic cleanup of unavailable products
+
+### Reviews & Ratings
+
+- Product reviews
+- Product star ratings
+- Average product rating
+- Edit reviews
+- Delete reviews
+- One review per buyer per product
+
+### Payment Simulation
+
+- M-Pesa simulation
+- Card payment simulation
+- Processing workflow
+- Payment reference generation
+- Digital receipts
+- Payment success confirmation
+
+### Commerce Improvements
+
+- Pending order deletion
+- Improved checkout flow
+- Inventory validation enhancements
+- Automatic cart cleanup
+
+## Fixed
+
+- Wishlist synchronization across users
+- Checkout transaction timeout
+- Product cleanup consistency
+- Inventory edge cases
+- Soft-delete synchronization

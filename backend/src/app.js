@@ -9,6 +9,10 @@ import orderRoutes from "./routes/order.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import wishlistRoutes from "./routes/wishlist.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
+import supportRoutes from "./routes/support.routes.js";
+import notificationRoutes
+from "./routes/notification.routes.js";
+
 
 
 const app = express();
@@ -25,5 +29,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/support", supportRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 export default app;

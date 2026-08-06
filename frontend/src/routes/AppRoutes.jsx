@@ -33,6 +33,9 @@ import ProductManagement from "../pages/admin/ProductManagement";
 import UserManagement from "../pages/admin/UserManagement";
 import PlatformAnalytics from "../pages/admin/PlatformAnalytics";
 import Checkout from "../pages/buyer/Checkout";
+import HelpCenter from "../pages/public/HelpCenter";
+import SupportTickets from "../pages/admin/SupportTickets";
+
 
 const AppRoutes = () => {
   return (
@@ -42,6 +45,10 @@ const AppRoutes = () => {
   <Route path="/" element={<Home />} />
   <Route path="/marketplace" element={<Marketplace />} />
   <Route path="/artists/:id" element={<ArtistProfile />} />
+  <Route
+  path="/help-center"
+  element={<HelpCenter />}
+/>
   <Route path="/about" element={<About />} />
   <Route path="/contact" element={<Contact />} />
   <Route path="/work/:id" element={<WorkDetails />}/>
@@ -135,6 +142,13 @@ const AppRoutes = () => {
   element={<PlatformAnalytics />}
 />
 
+<Route
+
+  path="support"
+
+  element={<SupportTickets />}
+
+/>
 </Route>
 
 </Routes>

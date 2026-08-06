@@ -6,6 +6,7 @@ import {
   Users,
   BarChart3,
   LogOut,
+  HandHelping,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
@@ -47,6 +48,14 @@ const AdminSidebar = () => {
         >
           <BadgeCheck size={20} />
           Verification Requests
+        </NavLink>
+
+        <NavLink 
+          to="/admin/support"
+            className={linkClass}>
+          <HandHelping size={20} />
+          Support Tickets
+
         </NavLink>
 
         <NavLink

@@ -78,13 +78,18 @@ const dashboardPath = isBuyer
               Artists
             </NavLink>
 
-            <NavLink to="/about" className={navLinkClass}>
-              About
-            </NavLink>
+            {!isAdmin && (
 
-            <NavLink to="/contact" className={navLinkClass}>
-              Contact
-            </NavLink>
+<NavLink
+  to="/help-center"
+  onClick={() => setMobileOpen(false)}
+>
+
+  Help Center
+
+</NavLink>
+
+)}
 
           </div>
 
@@ -243,13 +248,18 @@ const dashboardPath = isBuyer
                   Artists
                 </NavLink>
 
-                <NavLink to="/about" onClick={() => setMobileOpen(false)}>
-                  About
-                </NavLink>
+                {!isAdmin && (
 
-                <NavLink to="/contact" onClick={() => setMobileOpen(false)}>
-                  Contact
-                </NavLink>
+<NavLink
+  to="/help-center"
+  className={navLinkClass}
+>
+
+  Help Center
+
+</NavLink>
+
+)}
 
                 <hr />
 
