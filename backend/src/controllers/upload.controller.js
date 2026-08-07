@@ -27,9 +27,10 @@ export const uploadImage = async (req, res) => {
 );
 
     res.status(200).json({
-      success: true,
-      fileUrl: result.secure_url,
-    });
+  success: true,
+  fileUrl: result.secure_url,
+  imageUrl: result.secure_url,
+});
 
   } catch (error) {
 

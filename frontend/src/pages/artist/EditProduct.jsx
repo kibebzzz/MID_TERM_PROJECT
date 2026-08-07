@@ -23,7 +23,6 @@ const EditProduct = () => {
     price: "",
     category: "PAINTING",
     quantity: 1,
-    featured: false,
     imageUrls: [],
   });
 
@@ -38,7 +37,6 @@ const EditProduct = () => {
           price: response.data.price,
           category: response.data.category,
           quantity: response.data.quantity,
-          featured: response.data.featured,
           imageUrls: response.data.imageUrls,
         });
       } else {
@@ -139,15 +137,6 @@ const EditProduct = () => {
             <option value="OTHER">Other</option>
           </select>
 
-          <label className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              name="featured"
-              checked={formData.featured}
-              onChange={handleChange}
-            />
-            Featured Product
-          </label>
 
           <Button
             className="w-full"

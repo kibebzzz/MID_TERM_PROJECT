@@ -72,9 +72,9 @@ const Verification = () => {
         toast.success("Upload successful.");
 
         setFormData((prev) => ({
-            ...prev,
-            [field]: response.imageUrl,
-        }));
+  ...prev,
+  [field]: response.fileUrl,
+}));
 
     } else {
 

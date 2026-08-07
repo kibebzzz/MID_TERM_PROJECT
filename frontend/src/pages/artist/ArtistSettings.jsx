@@ -91,10 +91,10 @@ const [uploadingCover, setUploadingCover] = useState(false);
       toast.success("Upload successful!");
 
       if (type === "profile") {
-        setProfileImage(response.imageUrl);
-      } else {
-        setCoverImage(response.imageUrl);
-      }
+  setProfileImage(response.fileUrl);
+} else {
+  setCoverImage(response.fileUrl);
+}
 
     } else {
 
