@@ -32,3 +32,26 @@ export const getArtistById = async (id) => {
   const response = await fetch(`${API_URL}/artists/${id}`);
   return await response.json();
 };
+
+
+export const getArtistOrders = async (token) => {
+
+  const response = await fetch(
+
+    `${API_URL}/artist/orders`,
+
+    {
+
+      headers: {
+
+        Authorization: `Bearer ${token}`,
+
+      },
+
+    }
+
+  );
+
+  return await response.json();
+
+};

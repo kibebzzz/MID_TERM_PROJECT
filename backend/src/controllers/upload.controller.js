@@ -15,23 +15,34 @@ export const uploadImage = async (req, res) => {
     const folder = req.body.folder || "products";
 
     const result = await cloudinary.uploader.upload(
-      `data:${req.file.mimetype};base64,${file}`,
-      {
-        folder: `palette/${folder}`,
-      }
-    );
+  `data:${req.file.mimetype};base64,${file}`,
+  {
+    folder: `palette/${folder}`,
+
+    resource_type:
+      req.file.mimetype.startsWith("audio/")
+        ? "video"
+        : "image",
+  }
+);
 
     res.status(200).json({
       success: true,
-      imageUrl: result.secure_url,
+      fileUrl: result.secure_url,
     });
 
   } catch (error) {
-    console.error("Cloudinary Error:", error);
 
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
+  console.error(error);
+
+  console.error(error.message);
+
+  console.error(error.stack);
+
+  res.status(500).json({
+    success: false,
+    message: error.message,
+  });
+
+}
 };

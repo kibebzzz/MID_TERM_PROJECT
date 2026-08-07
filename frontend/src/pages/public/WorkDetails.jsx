@@ -28,6 +28,7 @@ const WorkDetails = () => {
 
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(0);
 const [reviews, setReviews] = useState([]);
 
 const [editingReview, setEditingReview] = useState(null);
@@ -109,12 +110,42 @@ if (reviewResponse.success) {
 
           <img
             src={
-              product.imageUrls?.[0] ||
-              "https://placehold.co/600x600?text=Palette"
-            }
+  product.imageUrls?.[selectedImage] ||
+  "https://placehold.co/600x600?text=Palette"
+}
             alt={product.title}
             className="rounded-3xl shadow-xl w-full h-[650px] object-cover"
           />
+
+          {product.imageUrls?.length > 1 && (
+
+  <div className="flex gap-3 mt-5 flex-wrap">
+
+    {product.imageUrls.map((image, index) => (
+
+      <img
+
+        key={index}
+
+        src={image}
+
+        alt={`Preview ${index + 1}`}
+
+        onClick={() => setSelectedImage(index)}
+
+        className={`w-24 h-24 rounded-xl object-cover cursor-pointer border-2 transition ${
+          selectedImage === index
+            ? "border-cyan-500"
+            : "border-transparent"
+        }`}
+
+      />
+
+    ))}
+
+  </div>
+
+)}
 
           <div>
 
@@ -171,6 +202,38 @@ if (reviewResponse.success) {
             <p className="text-gray-500 leading-8 mt-8">
               {product.description}
             </p>
+
+            {product.category === "MUSIC" &&
+
+product.audioPreviewUrl && (
+
+  <div className="mt-10">
+
+    <h3 className="text-2xl font-bold">
+
+      🎵 Preview Track
+
+    </h3>
+
+    <audio
+
+      controls
+
+      className="w-full mt-5"
+
+    >
+
+      <source
+
+        src={product.audioPreviewUrl}
+
+      />
+
+    </audio>
+
+  </div>
+
+)}
 
             {canPurchase && (
               <div className="flex gap-5 mt-12">

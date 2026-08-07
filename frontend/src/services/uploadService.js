@@ -7,7 +7,7 @@ export const uploadImage = async (
   try {
     const formData = new FormData();
 
-    formData.append("image", file);
+    formData.append("file", file);
     formData.append("folder", folder);
 
     const response = await fetch(`${API}/uploads`, {

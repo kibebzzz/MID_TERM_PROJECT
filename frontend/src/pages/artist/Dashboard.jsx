@@ -13,6 +13,7 @@ const Dashboard = () => {
 
   const [stats, setStats] = useState({
     totalProducts: 0,
+    revenue: 0,
     featuredProducts: 0,
     inventoryValue: 0,
   });
@@ -32,24 +33,36 @@ const Dashboard = () => {
   }, [user]);
 
   const cards = [
-    {
-      title: "Total Products",
-      value: stats.totalProducts,
-      icon: <Package size={28} />,
-    },
-    {
-      title: "Featured Products",
-      value: stats.featuredProducts,
-      icon: <Star size={28} />,
-    },
-    {
-      title: "Inventory Value",
-      value: `KSh ${Number(
-        stats.inventoryValue
-      ).toLocaleString()}`,
-      icon: <DollarSign size={28} />,
-    },
-  ];
+
+  {
+    title: "Total Products",
+    value: stats.totalProducts,
+    icon: <Package size={28} />,
+  },
+
+  {
+    title: "Revenue Earned",
+    value: `KSh ${Number(
+      stats.revenue
+    ).toLocaleString()}`,
+    icon: <DollarSign size={28} />,
+  },
+
+  {
+    title: "Products Sold",
+    value: stats.productsSold,
+    icon: <Package size={28} />,
+  },
+
+  {
+    title: "Available Inventory",
+    value: `KSh ${Number(
+      stats.inventoryValue
+    ).toLocaleString()}`,
+    icon: <Star size={28} />,
+  },
+
+];
 
   return (
     <div>
@@ -66,7 +79,7 @@ const Dashboard = () => {
 
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
 
         {cards.map((card) => (
           <div

@@ -84,6 +84,9 @@ model ArtistProfile {
   updatedAt DateTime @updatedAt
 }
 
+
+
+
 model Product {
   id String @id @default(cuid())
 
@@ -93,6 +96,7 @@ model Product {
   price Decimal @db.Decimal(10, 2)
 
   imageUrls String[]
+  audioPreviewUrl String?
 
   category ProductCategory
 
@@ -112,6 +116,9 @@ model Product {
   orderItems    OrderItem[]
   reviews       Review[]
 }
+
+
+
 
 model Cart {
   id String @id @default(cuid())

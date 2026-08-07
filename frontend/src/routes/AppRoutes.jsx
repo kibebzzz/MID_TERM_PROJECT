@@ -35,7 +35,7 @@ import PlatformAnalytics from "../pages/admin/PlatformAnalytics";
 import Checkout from "../pages/buyer/Checkout";
 import HelpCenter from "../pages/public/HelpCenter";
 import SupportTickets from "../pages/admin/SupportTickets";
-
+import ArtistOrders from "../pages/artist/ArtistOrders";
 
 const AppRoutes = () => {
   return (
@@ -97,6 +97,8 @@ const AppRoutes = () => {
   <Route path="upload" element={<UploadProduct />} />
 
   <Route path="products" element={<ManageProducts />} />
+
+  <Route path="orders" element={<ArtistOrders />} />
 
   <Route path="analytics" element={<Analytics />} />
 

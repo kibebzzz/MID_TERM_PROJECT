@@ -19,8 +19,13 @@ const UploadProduct = () => {
   imageUrls: "",
 });
 
-const [selectedImage, setSelectedImage] = useState(null);
-const [preview, setPreview] = useState("");
+const [selectedImages, setSelectedImages] = useState([]);
+
+const [previews, setPreviews] = useState([]);
+
+const [selectedAudio, setSelectedAudio] = useState(null);
+
+const [audioName, setAudioName] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,13 +37,43 @@ const [preview, setPreview] = useState("");
   };
 
 const handleImageChange = (e) => {
+
+  const files = Array.from(e.target.files);
+
+  if (files.length === 0) return;
+
+  if (files.length > 5) {
+
+    toast.error("Maximum 5 images allowed.");
+
+    return;
+
+  }
+
+  setSelectedImages(files);
+
+  setPreviews(
+
+    files.map((file) =>
+
+      URL.createObjectURL(file)
+
+    )
+
+  );
+
+};
+
+const handleAudioChange = (e) => {
+
   const file = e.target.files[0];
 
   if (!file) return;
 
-  setSelectedImage(file);
+  setSelectedAudio(file);
 
-  setPreview(URL.createObjectURL(file));
+  setAudioName(file.name);
+
 };
 
   const handleSubmit = async () => {
@@ -53,19 +88,66 @@ const handleImageChange = (e) => {
 
     setLoading(true);
 
-    let imageUrl = "";
+   const imageUrls = [];
 
-if (selectedImage) {
-  const uploadResponse = await uploadImage(selectedImage);
+for (const image of selectedImages) {
+
+  const uploadResponse =
+
+    await uploadImage(image);
 
   if (!uploadResponse.success) {
+
     toast.error(uploadResponse.message);
 
     setLoading(false);
+
     return;
+
   }
 
-  imageUrl = uploadResponse.imageUrl;
+  imageUrls.push(uploadResponse.fileUrl);
+
+}
+
+let audioPreviewUrl = "";
+
+if (
+
+  formData.category === "MUSIC" &&
+
+  selectedAudio
+
+) {
+
+  const audioUpload =
+
+    await uploadImage(
+
+      selectedAudio,
+
+      "music"
+
+    );
+
+  if (!audioUpload.success) {
+
+    toast.error(
+
+      "Audio upload failed."
+
+    );
+
+    setLoading(false);
+
+    return;
+
+  }
+
+  audioPreviewUrl =
+
+    audioUpload.fileUrl;
+
 }
 
     try {
@@ -77,7 +159,8 @@ if (selectedImage) {
   price: Number(formData.price),
   category: formData.category,
   quantity: Number(formData.quantity),
-  imageUrls: imageUrl ? [imageUrl] : [],
+ imageUrls,
+  audioPreviewUrl,
   artistId: user.id,
 });
 
@@ -151,22 +234,73 @@ if (selectedImage) {
   </label>
 
   <input
-    type="file"
-    accept="image/*"
-    onChange={handleImageChange}
-    className="w-full border rounded-xl p-3"
-  />
+  type="file"
+  multiple
+  accept="image/*"
+  onChange={handleImageChange}
+  className="w-full border rounded-xl p-3"
+/>
 
 </div>
 
-{preview && (
+{formData.category === "MUSIC" && (
+
   <div className="mt-6">
-    <img
-      src={preview}
-      alt="Preview"
-      className="w-64 h-64 object-cover rounded-2xl border shadow"
+
+    <label className="block mb-2 font-medium">
+
+      Preview Track
+
+    </label>
+
+    <input
+
+      type="file"
+
+      accept=".mp3,.wav,.ogg,audio/*"
+
+      onChange={handleAudioChange}
+
+      className="w-full border rounded-xl p-3"
+
     />
+
+    {audioName && (
+
+      <p className="text-green-600 mt-3">
+
+        🎵 {audioName}
+
+      </p>
+
+    )}
+
   </div>
+
+)}
+
+{previews.length > 0 && (
+
+  <div className="grid grid-cols-3 gap-4 mt-6">
+
+    {previews.map((preview, index) => (
+
+      <img
+
+        key={index}
+
+        src={preview}
+
+        alt={`Preview ${index + 1}`}
+
+        className="w-full h-40 object-cover rounded-2xl border shadow"
+
+      />
+
+    ))}
+
+  </div>
+
 )}
 
           <Input

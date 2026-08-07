@@ -7,6 +7,7 @@ import {
   BadgeCheck,
   Settings,
   LogOut,
+  ShoppingBag,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -47,6 +48,11 @@ const navigate = useNavigate();
           <Package size={20} />
           My Products
         </NavLink>
+
+        <NavLink to="/artist/orders" className={linkClass}>
+  <ShoppingBag size={20} />
+  Orders
+</NavLink>
 
         <NavLink to="/artist/analytics" className={linkClass}>
           <BarChart3 size={20} />

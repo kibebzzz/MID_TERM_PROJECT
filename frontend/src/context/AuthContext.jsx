@@ -4,7 +4,13 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
   const [user, setUser] = useState(null);
+const [token, setToken] = useState(
+  localStorage.getItem("token") || null
+);
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,17 +22,29 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData, token) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", token);
 
-    setUser(userData);
-  };
+  localStorage.setItem(
+    "user",
+    JSON.stringify(userData)
+  );
+
+  localStorage.setItem(
+    "token",
+    token
+  );
+
+  setUser(userData);
+
+  setToken(token);
+
+};
 
   const logout = () => {
   localStorage.removeItem("user");
   localStorage.removeItem("token");
 
   setUser(null);
+  setToken(null);
 
   navigate("/");
 };
@@ -34,11 +52,12 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
-        login,
-        logout,
-        isAuthenticated: !!user,
-      }}
+  user,
+  token,
+  login,
+  logout,
+  isAuthenticated: !!user,
+}}
     >
       {children}
     </AuthContext.Provider>

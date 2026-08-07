@@ -206,3 +206,137 @@ export const reviewVerification = async (
   return artist;
 
 };
+
+export const getArtistOrders = async (artistId) => {
+
+  const orders = await prisma.order.findMany({
+
+    where: {
+
+      status: "PAID",
+
+      items: {
+
+        some: {
+
+          product: {
+
+            artistId,
+
+          },
+
+        },
+
+      },
+
+    },
+
+    include: {
+
+      user: {
+
+        select: {
+
+          id: true,
+
+          fullName: true,
+
+          email: true,
+
+        },
+
+      },
+
+      items: {
+
+        where: {
+
+          product: {
+
+            artistId,
+
+          },
+
+        },
+
+        include: {
+
+          product: true,
+
+        },
+
+      },
+
+    },
+
+    orderBy: {
+
+      paidAt: "desc",
+
+    },
+
+  });
+
+  const totalRevenue = orders.reduce(
+
+    (sum, order) =>
+
+      sum +
+
+      order.items.reduce(
+
+        (subtotal, item) =>
+
+          subtotal +
+
+          item.price * item.quantity,
+
+        0
+
+      ),
+
+    0
+
+  );
+
+  const totalProductsSold = orders.reduce(
+
+    (sum, order) =>
+
+      sum +
+
+      order.items.reduce(
+
+        (subtotal, item) =>
+
+          subtotal + item.quantity,
+
+        0
+
+      ),
+
+    0
+
+  );
+
+  return {
+
+    totalOrders: orders.length,
+
+    totalRevenue,
+
+    totalProductsSold,
+
+    averageOrderValue:
+
+      orders.length === 0
+
+        ? 0
+
+        : totalRevenue / orders.length,
+
+    orders,
+
+  };
+
+};

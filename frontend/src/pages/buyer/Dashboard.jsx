@@ -31,11 +31,16 @@ const Dashboard = () => {
   }, [user]);
 
   const totalSpent = useMemo(() => {
-    return orders.reduce(
-      (sum, order) => sum + Number(order.totalAmount),
+
+  return orders
+    .filter((order) => order.status === "PAID")
+    .reduce(
+      (sum, order) =>
+        sum + Number(order.totalAmount),
       0
     );
-  }, [orders]);
+
+}, [orders]);
 
   return (
     <PageWrapper>
@@ -81,8 +86,18 @@ const Dashboard = () => {
             </h3>
 
             <p className="text-4xl font-black mt-3">
-              {orders.length}
-            </p>
+
+  {
+
+    orders.filter(
+
+      (order) => order.status === "PAID"
+
+    ).length
+
+  }
+
+</p>
           </div>
 
           <div className="bg-white rounded-3xl shadow p-6">

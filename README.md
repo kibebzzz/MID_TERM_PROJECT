@@ -373,22 +373,31 @@ Roles:
 - Artist
 - Administrator
 
----
+## Recent Updates
 
-## 🚧 Currently In Development
+### Notification System
+- Added real-time notification engine.
+- Admins receive notifications for new support tickets.
+- Artists receive notifications for:
+  - Product reviews
+  - New orders
+  - Verification approval/rejection
+- Buyers receive notifications when their support ticket status changes.
+- Added notification dropdown with:
+  - Unread badge
+  - Mark as read
+  - Delete individual notification
+  - Clear all notifications
+  - Relative timestamps
+  - Animated UI
 
-- Help Center
-- Notifications
-- Artist Sales History
-- Payment Gateway Integration
+### Reviews
+- Buyers can edit and delete their own reviews.
+- Artists are notified when new reviews are submitted.
 
-## ✅ Recently Completed
-
-- Database-backed Wishlist
-- Product Reviews
-- Product Ratings
-- Payment Simulation
-- Digital Receipt
+### Support Center
+- Admin can manage support tickets.
+- Ticket status updates notify the submitting user.
 
 
 # Development Roadmap

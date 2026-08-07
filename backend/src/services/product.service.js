@@ -138,37 +138,70 @@ export const deleteProduct = async (id) => {
 
 export const getArtistDashboardStats = async (artistId) => {
   const totalProducts = await prisma.product.count({
-    where: {
+  where: {
+    artistId,
+  },
+});
+
+const featuredProducts = await prisma.product.count({
+  where: {
+    artistId,
+    featured: true,
+    isAvailable: true,
+  },
+});
+
+const products = await prisma.product.findMany({
+  where: {
+    artistId,
+  },
+  orderBy: {
+    createdAt: "desc",
+  },
+});
+
+const availableProducts = products.filter(
+  (product) => product.isAvailable
+);
+
+const inventoryValue = availableProducts.reduce(
+  (total, product) =>
+    total +
+    Number(product.price) * product.quantity,
+  0
+);
+
+const soldProducts = await prisma.orderItem.findMany({
+  where: {
+    order: {
+      status: "PAID",
+    },
+    product: {
       artistId,
     },
-  });
+  },
+});
 
-  const featuredProducts = await prisma.product.count({
-    where: {
-      artistId,
-      featured: true,
-    },
-  });
+const revenue = soldProducts.reduce(
+  (total, item) =>
+    total + item.price * item.quantity,
+  0
+);
 
-  const products = await prisma.product.findMany({
-    where: {
-      artistId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+const productsSold = soldProducts.reduce(
+  (total, item) =>
+    total + item.quantity,
+  0
+);
 
-  const inventoryValue = products.reduce((total, product) => {
-    return total + Number(product.price) * product.quantity;
-  }, 0);
-
-  return {
-    totalProducts,
-    featuredProducts,
-    inventoryValue,
-    products,
-  };
+return {
+  totalProducts,
+  featuredProducts,
+  inventoryValue,
+  revenue,
+  productsSold,
+  products,
+};
 };
 
 export const getProductsByArtist = async (artistId) => {

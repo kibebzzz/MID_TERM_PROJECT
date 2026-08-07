@@ -11,6 +11,7 @@ import {
   getArtists,
     getAllVerificationRequests,
     reviewArtistVerification,
+    getOrdersForArtist,
 } from "../controllers/user.controller.js";
 
 const router = Router();
@@ -40,6 +41,13 @@ router.put(
   authenticate,
   authorize("ADMIN"),
   reviewArtistVerification
+);
+
+router.get(
+  "/artist/orders",
+  authenticate,
+  authorize("ARTIST"),
+  getOrdersForArtist
 );
 
 export default router;

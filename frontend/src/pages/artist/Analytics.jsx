@@ -54,7 +54,7 @@ const Analytics = () => {
 
         {/* Cards */}
 
-        <div className="grid md:grid-cols-3 gap-8 mt-12">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 mt-12">
 
           <div className="bg-white rounded-3xl shadow p-8">
 
@@ -91,6 +91,18 @@ const Analytics = () => {
             </h2>
 
           </div>
+
+          <div className="bg-white rounded-3xl shadow p-8">
+
+  <p className="text-gray-500">
+    Revenue Earned
+  </p>
+
+  <h2 className="text-3xl font-black mt-4">
+    KSh {stats.revenue.toLocaleString()}
+  </h2>
+
+</div>
 
         </div>
 
